@@ -1,0 +1,36 @@
+# Spring Boot配置文件
+spring:
+  application:
+    name: gitbook-backend
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/gitbook?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8
+    username: root
+    password: 8321169abc
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+      pool-name: GitBookHikariPool
+  # 数据库初始化配置
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+      mode: never
+
+# MyBatis Plus配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.gitbook.entity
+
+# 服务器配置
+server:
+  port: 8081
+  servlet:
+    context-path: /

@@ -1,0 +1,63 @@
+package com.example.gitbook.controller;
+
+import com.example.gitbook.entity.ArticleContent;
+import com.example.gitbook.service.ArticleContentService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+
+/**
+ * 文章内容Controller
+ */
+@RestController
+@RequestMapping("/api/articles")
+public class ArticleContentController {
+
+    @Resource
+    private ArticleContentService articleContentService;
+
+    /**
+     * 根据分类ID获取文章内容
+     * @param categoryId 分类ID
+     * @return 文章内容
+     */
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<ArticleContent> getContentByCategoryId(@PathVariable Long categoryId) {
+        ArticleContent content = articleContentService.getContentByCategoryId(categoryId);
+        return ResponseEntity.ok(content);
+    }
+
+    /**
+     * 根据ID获取文章内容
+     * @param id 文章ID
+     * @return 文章内容
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ArticleContent> getContentById(@PathVariable Long id) {
+        ArticleContent content = articleContentService.getContentById(id);
+        return ResponseEntity.ok(content);
+    }
+
+    /**
+     * 保存或更新文章内容
+     * @param content 文章内容
+     * @return 操作结果
+     */
+    @PostMapping
+    public ResponseEntity<Boolean> saveOrUpdateContent(@RequestBody ArticleContent content) {
+        boolean result = articleContentService.saveOrUpdateContent(content);
+        return ResponseEntity.ok(result);
+    }
+
+    /**
+     * 删除文章内容
+     * @param id 文章ID
+     * @return 操作结果
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteContent(@PathVariable Long id) {
+        boolean result = articleContentService.deleteContent(id);
+        return ResponseEntity.ok(result);
+    }
+}
