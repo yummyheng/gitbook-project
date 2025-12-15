@@ -2,8 +2,10 @@ package com.example.gitbook.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.gitbook.entity.ArticleCategory;
+import com.example.gitbook.entity.ArticleContent;
 import com.example.gitbook.mapper.ArticleCategoryMapper;
 import com.example.gitbook.service.ArticleCategoryService;
+import com.example.gitbook.service.ArticleContentService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +39,27 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
         category.setCreateTime(now);
         category.setUpdateTime(now);
         
+        // 根据父分类ID计算level
+        if (category.getParentId() != null) {
+            if (category.getParentId() == 0L) {
+                // 顶级分类
+                category.setLevel(1);
+            } else {
+                // 非顶级分类，获取父分类的level
+                ArticleCategory parentCategory = articleCategoryMapper.selectById(category.getParentId());
+                if (parentCategory != null) {
+                    // 子分类的level为父分类level+1
+                    category.setLevel(parentCategory.getLevel() + 1);
+                } else {
+                    // 父分类不存在，默认设为顶级分类
+                    category.setLevel(1);
+                }
+            }
+        } else {
+            // 默认为顶级分类
+            category.setLevel(1);
+        }
+        
         // 保存分类
         return articleCategoryMapper.insert(category) > 0;
     }
@@ -46,24 +69,94 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
         // 设置更新时间
         category.setUpdateTime(new Date());
         
+        // 如果父分类ID发生变化，更新level
+        ArticleCategory oldCategory = articleCategoryMapper.selectById(category.getId());
+        if (oldCategory != null && category.getParentId() != null && !category.getParentId().equals(oldCategory.getParentId())) {
+            if (category.getParentId() == 0L) {
+                // 改为顶级分类
+                category.setLevel(1);
+            } else {
+                // 改为非顶级分类，获取新父分类的level
+                ArticleCategory parentCategory = articleCategoryMapper.selectById(category.getParentId());
+                if (parentCategory != null) {
+                    // 新分类的level为父分类level+1
+                    category.setLevel(parentCategory.getLevel() + 1);
+                    
+                    // 更新所有子分类的level
+                    updateChildrenLevel(category.getId(), category.getLevel());
+                } else {
+                    // 父分类不存在，默认设为顶级分类
+                    category.setLevel(1);
+                }
+            }
+        }
+        
         // 更新分类
         return articleCategoryMapper.updateById(category) > 0;
+    }
+    
+    /**
+     * 递归更新所有子分类的level
+     * @param parentId 父分类ID
+     * @param parentLevel 父分类level
+     */
+    private void updateChildrenLevel(Long parentId, Integer parentLevel) {
+        LambdaQueryWrapper<ArticleCategory> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ArticleCategory::getParentId, parentId);
+        List<ArticleCategory> children = articleCategoryMapper.selectList(wrapper);
+        
+        if (children != null && !children.isEmpty()) {
+            for (ArticleCategory child : children) {
+                // 子分类的level为父分类level+1
+                child.setLevel(parentLevel + 1);
+                child.setUpdateTime(new Date());
+                articleCategoryMapper.updateById(child);
+                
+                // 递归更新子分类的子分类
+                updateChildrenLevel(child.getId(), child.getLevel());
+            }
+        }
+    }
+
+    private ArticleContentService articleContentService;
+
+    @Resource
+    public void setArticleContentService(ArticleContentService articleContentService) {
+        this.articleContentService = articleContentService;
     }
 
     @Override
     public boolean deleteCategory(Long id) {
-        // 检查是否有子分类
+        // 级联删除该分类及其所有子分类
+        deleteCategoryRecursive(id);
+        return true;
+    }
+    
+    /**
+     * 递归删除分类及其所有子分类
+     * @param id 分类ID
+     */
+    private void deleteCategoryRecursive(Long id) {
+        // 先获取该分类的所有子分类
         LambdaQueryWrapper<ArticleCategory> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(ArticleCategory::getParentId, id);
         List<ArticleCategory> children = articleCategoryMapper.selectList(wrapper);
         
+        // 递归删除所有子分类
         if (children != null && !children.isEmpty()) {
-            // 有子分类，不能删除
-            return false;
+            for (ArticleCategory child : children) {
+                deleteCategoryRecursive(child.getId());
+            }
         }
         
-        // 删除分类
-        return articleCategoryMapper.deleteById(id) > 0;
+        // 删除当前分类关联的文章内容
+        List<ArticleContent> contents = articleContentService.getAllContentsByCategoryId(id);
+        for (ArticleContent content : contents) {
+            articleContentService.deleteContent(content.getId());
+        }
+        
+        // 删除当前分类
+        articleCategoryMapper.deleteById(id);
     }
 
     /**

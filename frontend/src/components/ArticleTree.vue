@@ -21,7 +21,28 @@
       class="article-tree"
       default-expand-all
       :filter-node-method="filterNode"
-    ></el-tree>
+    >
+      <!-- 自定义节点内容，添加操作按钮 -->
+      <div slot-scope="{ node, data }" class="custom-tree-node">
+        <span>{{ node.label }}</span>
+        <span class="tree-node-actions">
+          <el-dropdown @command="(command) => handleAddOperation(command, data)">
+            <el-button
+              type="text"
+              size="mini"
+              title="添加节点"
+            >
+              <i class="el-icon-plus"></i>
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="child">新增子节点</el-dropdown-item>
+              <el-dropdown-item command="sibling">新增同级节点</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </span>
+      </div>
+    </el-tree>
   </div>
 </template>
 
@@ -68,6 +89,22 @@ export default {
     handleNodeClick(data) {
       // 处理节点点击事件
       this.$emit('node-click', data)
+    },
+    handleAddOperation(command, data) {
+      // 处理添加操作下拉菜单选择
+      if (command === 'child') {
+        this.handleAddChild(data)
+      } else if (command === 'sibling') {
+        this.handleAddSibling(data)
+      }
+    },
+    handleAddChild(data) {
+      // 处理新增子节点事件
+      this.$emit('add-child', data)
+    },
+    handleAddSibling(data) {
+      // 处理新增同级节点事件
+      this.$emit('add-sibling', data)
     },
     getTree() {
       return this.$refs.articleTree

@@ -2,20 +2,9 @@
 spring:
   application:
     name: gitbook-backend
-  # 数据源配置
-  datasource:
-    url: jdbc:mysql://localhost:3306/gitbook?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8
-    username: root
-    password: 8321169abc
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      connection-test-query: SELECT 1
-      pool-name: GitBookHikariPool
+  # 引入数据源配置
+  config:
+    import: classpath:application-datasource.yml
   # 数据库初始化配置
   sql:
     init:

@@ -1,0 +1,2265 @@
+uid=20_0 RootWebArea "GitBook" url="http://localhost:5175/"
+  uid=20_1 heading "GitBook" level="1"
+  uid=20_2 button "保存"
+  uid=20_3 button "预览"
+  uid=20_4 button "一键同步"
+  uid=20_5 button "删除"
+  uid=20_6 textbox "搜索文章"
+  uid=20_7 StaticText ""
+  uid=20_8 tree orientation="vertical"
+    uid=20_9 treeitem " 第一章" expandable expanded level="1" selectable
+      uid=20_10 treeitem " 1.1 第一节" expandable expanded level="2" selectable
+      uid=20_11 treeitem " 1.3 第三节" expandable expanded level="2" selectable
+    uid=20_12 treeitem " 第二章" expandable expanded level="1" selectable
+      uid=20_13 treeitem " 2.1 第一节" expandable expanded level="2" selectable
+      uid=20_14 treeitem " 2.2 第二节" expandable expanded level="2" selectable
+    uid=20_15 treeitem " 第三章" expandable expanded level="1" selectable
+      uid=20_16 treeitem " 3.1 第一节" expandable expanded level="2" selectable
+      uid=20_17 treeitem " 3.2 第二节" expandable expanded level="2" selectable
+      uid=20_18 treeitem " 3.3 第三节" expandable expanded level="2" selectable
+    uid=20_19 treeitem " derby" expandable expanded level="1" selectable
+      uid=20_20 treeitem " 前端" expandable expanded level="2" selectable
+      uid=20_21 treeitem " 后端" expandable expanded level="2" selectable
+      uid=20_22 treeitem " 项目概述" expandable expanded level="2" selectable
+    uid=20_23 treeitem " platform" expandable expanded level="1" selectable
+      uid=20_24 treeitem " 前端" expandable expanded level="2" selectable
+      uid=20_25 treeitem " 后端" expandable expanded level="2" selectable
+      uid=20_26 treeitem " 接口文档" expandable expanded level="2" selectable
+      uid=20_27 treeitem " 测试" expandable expanded level="2" selectable
+      uid=20_28 treeitem " 运维" expandable expanded level="2" selectable
+      uid=20_29 treeitem " 项目概述" expandable expanded level="2" selectable
+    uid=20_30 treeitem " 通用" expandable expanded level="1" selectable
+  uid=20_31 button "表情 <⌘E>"
+  uid=20_32 button "标题 <⌘H>"
+  uid=20_33 button "粗体 <⌘B>"
+  uid=20_34 button "斜体 <⌘I>"
+  uid=20_35 button "删除线 <⌘D>"
+  uid=20_36 button "链接 <⌘K>"
+  uid=20_37 button "无序列表 <⌘L>"
+  uid=20_38 button "有序列表 <⌘O>"
+  uid=20_39 button "任务列表 <⌘J>"
+  uid=20_40 button "引用 <⌘;>"
+  uid=20_41 button "分隔线 <⇧⌘H>"
+  uid=20_42 button "代码块 <⌘U>"
+  uid=20_43 button "行内代码 <⌘G>"
+  uid=20_44 button "选择文件" value="未选择任何文件"
+  uid=20_45 button "开始录音/结束录音"
+  uid=20_46 button "表格 <⌘M>"
+  uid=20_47 button "撤销 <⌘Z>"
+  uid=20_48 button "重做 <⌘Y>"
+  uid=20_49 button "全屏切换 <⌘'>"
+  uid=20_50 button "切换编辑模式"
+  uid=20_51 button "更多"
+  uid=20_52 generic value="# 备份传输规范
+
+## 1. 概述
+
+本文档定义了项目代码的备份和传输规范，旨在确保代码备份的一致性、完整性和可追溯性，便于团队成员在不同环境间传输和共享代码。
+
+## 2. 压缩文件命名规范
+
+### 2.1 命名格式
+
+{项目名称}-{组件类型}-with-docs-{时间戳}.zip
+
+```
+### 2.2 命名说明
+
+- **项目名称**：使用项目的标准英文名称，如 `api-call-derby`、`api-call-platform`、`card`、`log-integration-tool`
+- **组件类型**：如果项目包含多个组件，需指定组件类型，如 `frontend`、`backend`；如果项目只有单一组件，可以省略
+- **with-docs**：固定后缀，表示压缩包包含文档
+- **时间戳**：格式为 `YYYYMMDD_HHMMSS`，例如 `20251128_153045`，用于唯一标识备份时间
+
+### 2.3 示例
+
+- 单一组件项目：`api-call-derby-with-docs-20251128_153045.zip`
+- 多组件项目的前端：`api-call-platform-frontend-with-docs-20251128_153045.zip`
+- 多组件项目的后端：`api-call-platform-backend-with-docs-20251128_153045.zip`
+- 工具类项目：`log-integration-tool-with-docs-20251128_153045.zip`
+
+## 3. 压缩文件内容规范
+
+### 3.1 必须包含的内容
+
+- **源代码目录** (`src/`)：包含完整的项目源代码
+- **文档目录** (`doc/`)：包含项目相关文档
+- **项目配置文件**：如 `pom.xml` (Maven)、`package.json` (Node.js)、`vite.config.js` 等
+- **安装说明**：如 `README.md`、`安装指南.md` 等
+
+### 3.2 建议包含的内容
+
+- **配置文件示例**：如 `application.properties.example`
+- **构建脚本**：如 `build.sh`、`deploy.sh` 等
+
+### 3.3 禁止包含的内容
+
+- **目标目录** (`target/`、`dist/`)：编译后生成的文件
+- **依赖目录** (`node_modules/`、`.m2/`)：第三方依赖
+- **日志文件** (`*.log`)
+- **临时文件** (`*.tmp`、`*.temp`)
+- **IDE配置文件** (`.idea/`、`.vscode/`、`*.iml`)
+- **版本控制目录** (`.git/`)
+
+## 4. Backups文件夹压缩规范
+
+### 4.1 压缩规则
+
+每当backups文件夹中的任何文件有更新时，必须执行以下操作：
+1. 删除backups目录中已存在的`backups.zip`文件
+2. 重新压缩整个backups目录为新的`backups.zip`文件
+3. 将生成的`backups.zip`文件存储在backups目录中
+
+### 4.2 压缩命令
+
+```bash
+# 进入backups目录
+cd /Users/hengzai/javaAIProject/debugProject/backups/
+# 删除旧的backups.zip文件
+rm -f backups.zip
+# 压缩整个backups目录为新的backups.zip文件
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+### 4.3 注意事项
+
+- 压缩时必须排除当前目录下的`backups.zip`文件本身，避免递归压缩
+- 压缩时建议排除系统生成的隐藏文件（如`.DS_Store`）
+- 此压缩操作应在所有项目的备份命令执行完成后自动执行
+
+## 4. 各个项目的备份传输方式
+
+### 4.1 API调用平台项目 (api-call-platform)
+
+#### 4.1.1 前端备份
+
+**项目位置**：`/Users/hengzai/javaAIProject/debugProject/api-call-platform/frontend/`
+
+**备份命令**：
+
+```bash
+cd /Users/hengzai/javaAIProject/debugProject/api-call-platform/frontend/
+mkdir -p ../../backups/
+# 使用最高压缩级别(-9)并排除更多不必要的文件
+zip -9 -r ../../backups/api-call-platform-frontend-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "node_modules/*" "dist/*" ".git/*" ".idea/*" "*.log" "*.tmp" ".vscode/*" "output.css" "test-styles.html"
+# 清理旧备份文件，同类型文件最多保留两个
+cd ../../backups/
+# 找到所有api-call-platform-frontend类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件
+ls -1t api-call-platform-frontend-with-docs-*.zip | tail -n +3 | xargs rm -f
+# 压缩整个backups目录为backups.zip文件
+rm -f backups.zip
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+**包含内容**：
+
+- `src/`：前端源代码
+- `doc/`：前端相关文档
+- `index.html`：入口文件
+- `package.json`：项目配置
+- `vite.config.js`：构建配置
+- `README.md`：项目说明
+
+#### 4.1.2 后端备份
+
+**项目位置**：`/Users/hengzai/javaAIProject/debugProject/api-call-platform/backend/`
+
+**备份命令**：
+
+```bash
+cd /Users/hengzai/javaAIProject/debugProject/api-call-platform/backend/
+mkdir -p ../../backups/
+zip -r ../../backups/api-call-platform-backend-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" ".git/*" ".idea/*" "*.log" "*.tmp"
+# 清理旧备份文件，同类型文件最多保留两个
+cd ../../backups/
+# 找到所有api-call-platform-backend类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件
+ls -1t api-call-platform-backend-with-docs-*.zip | tail -n +3 | xargs rm -f
+# 压缩整个backups目录为backups.zip文件
+rm -f backups.zip
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+**包含内容**：
+
+- `src/`：后端源代码
+- `pom.xml`：项目配置
+- `README.md`：项目说明
+
+### 4.2 API调用Derby项目 (api-call-derby)
+
+**项目位置**：`/Users/hengzai/javaAIProject/debugProject/api-call-derby/`
+
+**备份命令**：
+
+```bash
+cd /Users/hengzai/javaAIProject/debugProject/api-call-derby/
+mkdir -p ../backups/
+zip -r ../backups/api-call-derby-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp"
+# 清理旧备份文件，同类型文件最多保留两个
+cd ../backups/
+# 找到所有api-call-derby类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件
+ls -1t api-call-derby-with-docs-*.zip | tail -n +3 | xargs rm -f
+# 压缩整个backups目录为backups.zip文件
+rm -f backups.zip
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+**包含内容**：
+
+- `src/`：项目源代码
+- `doc/`：项目相关文档
+- `pom.xml`：项目配置
+- `安装注意事项.md`：安装说明
+
+### 4.3 卡片项目 (card)
+
+**项目位置**：`/Users/hengzai/javaAIProject/debugProject/card/`
+
+**备份命令**：
+
+```bash
+cd /Users/hengzai/javaAIProject/debugProject/card/
+mkdir -p ../backups/
+zip -r ../backups/card-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp"
+# 清理旧备份文件，同类型文件最多保留两个
+cd ../backups/
+# 找到所有card类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件
+ls -1t card-with-docs-*.zip | tail -n +3 | xargs rm -f
+# 压缩整个backups目录为backups.zip文件
+rm -f backups.zip
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+**包含内容**：
+
+- `src/`：项目源代码
+- `doc/`：项目相关文档
+- `pom.xml`：项目配置
+
+### 4.4 卡片Derby项目 (card-derby)
+
+**项目位置**：`/Users/hengzai/javaAIProject/debugProject/card-derby/`
+
+**备份命令**：
+
+```bash
+cd /Users/hengzai/javaAIProject/debugProject/card-derby/
+mkdir -p ../backups/
+zip -r ../backups/card-derby-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp" "logs/*" "carddb/*" "Dockerfile" "docker-compose.yml"
+# 清理旧备份文件，同类型文件最多保留两个
+cd ../backups/
+# 找到所有card-derby类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件
+ls -1t card-derby-with-docs-*.zip | tail -n +3 | xargs rm -f
+# 压缩整个backups目录为backups.zip文件
+rm -f backups.zip
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+**包含内容**：
+
+- `src/`：项目源代码
+- `pom.xml`：项目配置
+
+### 4.5 日志集成工具 (log-integration-tool)
+
+**项目位置**：`/Users/hengzai/javaAIProject/debugProject/log-integration-tool/`
+
+**备份命令**：
+
+```bash
+cd /Users/hengzai/javaAIProject/debugProject/log-integration-tool/
+mkdir -p ../backups/
+zip -r ../backups/log-integration-tool-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp"
+# 清理旧备份文件，同类型文件最多保留两个
+cd ../backups/
+# 找到所有log-integration-tool类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件
+ls -1t log-integration-tool-with-docs-*.zip | tail -n +3 | xargs rm -f
+# 压缩整个backups目录为backups.zip文件
+rm -f backups.zip
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+```
+
+**包含内容**：
+
+- `src/`：项目源代码
+- `doc/`：项目相关文档
+- `pom.xml`：项目配置
+
+## 5. 存储位置规范
+
+### 5.1 本地存储
+
+- 所有备份文件应统一存储在项目根目录下的 `backups/` 文件夹中
+- 定期清理过期备份，同类型的文件最多只保留两个，如果超过两个，则根据文件名删除较早的文件
+
+### 5.2 远程存储
+
+- 重要备份应上传到团队共享的云存储服务
+- 云存储目录结构应与本地保持一致（使用 `backups/` 文件夹）
+- 备份文件需包含版本信息和时间戳
+
+## 6. 版本控制
+
+- 备份文件应包含在版本控制系统中
+- 每次重大变更后应创建新的备份
+- 备份文件命名中可选择性包含版本号，如 `api-call-derby-v1.0.0-with-docs.zip`
+
+## 7. 恢复流程
+
+### 7.1 解压命令
+
+```bash
+unzip {备份文件名}.zip -d {目标目录}
+```
+
+### 7.2 恢复步骤
+
+1. 解压备份文件到目标目录
+2. 安装依赖（`npm install` 或 `mvn install`）
+3. 配置项目参数
+4. 构建项目（`npm run build` 或 `mvn package`）
+5. 启动服务
+
+## 8. 检查清单
+
+在创建备份前，请检查以下内容：
+
+- [ ] 所有源代码已提交到版本控制系统
+- [ ] 文档已更新到最新版本
+- [ ] 已排除不需要备份的文件和目录
+- [ ] 备份文件命名符合规范
+- [ ] 备份文件已存储到指定位置
+
+## 9. 变更记录
+
+| 版本 | 日期       | 变更内容               | 变更人 |
+|------|------------|------------------------|--------|
+| 1.1  | 2025-11-28 | 更新备份规范：统一存储目录、添加时间戳 | 系统架构师 |
+| 1.0  | 2025-11-28 | 初始版本               | 系统架构师 |
+
+## 9. 数据库初始化SQL管理
+
+### 9.1 初始化SQL文件生成
+
+- **MySQL**: 通过MCP工具查询数据库表结构自动生成
+- **Derby**: 从项目初始化SQL文件中提取和整合
+
+### 9.2 初始化SQL文件内容
+
+- 包含所有必要的表结构创建语句
+- 不包含测试数据（测试数据单独管理）
+- 文件命名格式：`{数据库类型}_init.sql`
+
+### 9.3 存储位置
+
+所有初始化SQL文件统一存储在项目根目录下的`backups/`文件夹中
+
+## 10. 变更记录
+
+| 版本 | 日期       | 变更内容               | 变更人 |
+|------|------------|------------------------|--------|
+| 1.5  | 2025-12-01 | 新增backups文件夹压缩规范：当backups文件夹内容更新时，自动压缩为backups.zip并删除旧文件 | 系统架构师 |
+| 1.4  | 2025-12-01 | 更新备份策略：同类型文件最多保留两个，超过则删除较早文件 | 系统架构师 |
+| 1.3  | 2025-12-01 | 优化前端备份策略：使用最高压缩级别、清理旧备份文件、排除更多不必要文件 | 系统架构师 |
+| 1.2  | 2025-11-28 | 添加数据库初始化SQL管理规范 | 系统架构师 |
+| 1.1  | 2025-11-28 | 更新备份规范：统一存储目录、添加时间戳 | 系统架构师 |
+| 1.0  | 2025-11-28 | 初始版本               | 系统架构师 |
+
+## 11. 附录
+
+### 11.1 压缩命令示例
+
+```bash
+# Linux/MacOS - 标准压缩
+zip -r {项目名称}-{组件类型}-with-docs.zip . -x "*.git/*" "target/*" "node_modules/*" "*.log" "*.tmp"
+
+# Linux/MacOS - 最高压缩级别（推荐）
+zip -9 -r {项目名称}-{组件类型}-with-docs.zip . -x "*.git/*" "target/*" "node_modules/*" "*.log" "*.tmp"
+
+# 添加时间戳的备份命令示例
+zip -9 -r backup-$(date +%Y%m%d_%H%M%S).zip . -x "*.git/*" "target/*" "node_modules/*" "*.log" "*.tmp"
+```
+
+### 11.2 解压命令示例
+
+```bash
+# Linux/MacOS
+unzip {项目名称}-{组件类型}-with-docs.zip -d {目标目录}
+```
+
+### 11.3 初始化SQL文件使用示例
+
+```bash
+# MySQL
+mysql -u root -p < backups/mysql_init.sql
+
+# Derby
+# 启动Derby网络服务器后，使用ij工具执行
+ij> connect 'jdbc:derby://localhost:1527/yourdb;create=true;user=app;password=app';
+ij> run 'backups/derby_init.sql';
+```
+
+```
+
+
+```
+
+"
+    uid=20_53 StaticText "# "
+    uid=20_54 StaticText "备份传输规范"
+    uid=20_55 LineBreak "
+"
+    uid=20_56 LineBreak "
+"
+    uid=20_57 StaticText "## "
+    uid=20_58 StaticText "1. 概述"
+    uid=20_59 LineBreak "
+"
+    uid=20_60 LineBreak "
+"
+    uid=20_61 StaticText "本文档定义了项目代码的备份和传输规范，旨在确保代码备份的一致性、完整性和可追溯性，便于团队成员在不同环境间传输和共享代码。"
+    uid=20_62 LineBreak "
+"
+    uid=20_63 LineBreak "
+"
+    uid=20_64 StaticText "## "
+    uid=20_65 StaticText "2. 压缩文件命名规范"
+    uid=20_66 LineBreak "
+"
+    uid=20_67 LineBreak "
+"
+    uid=20_68 StaticText "### "
+    uid=20_69 StaticText "2.1 命名格式"
+    uid=20_70 LineBreak "
+"
+    uid=20_71 LineBreak "
+"
+    uid=20_72 StaticText "{项目名称}-{组件类型}-with-docs-{时间戳}.zip"
+    uid=20_73 LineBreak "
+"
+    uid=20_74 LineBreak "
+"
+    uid=20_75 StaticText "```"
+    uid=20_76 LineBreak "
+"
+    uid=20_77 StaticText "### 2.2 命名说明"
+    uid=20_78 LineBreak "
+"
+    uid=20_79 LineBreak "
+"
+    uid=20_80 StaticText "- **项目名称**：使用项目的标准英文名称，如 `api-call-derby`、`api-call-platform`、`card`、`log-integration-tool`"
+    uid=20_81 LineBreak "
+"
+    uid=20_82 StaticText "- **组件类型**：如果项目包含多个组件，需指定组件类型，如 `frontend`、`backend`；如果项目只有单一组件，可以省略"
+    uid=20_83 LineBreak "
+"
+    uid=20_84 StaticText "- **with-docs**：固定后缀，表示压缩包包含文档"
+    uid=20_85 LineBreak "
+"
+    uid=20_86 StaticText "- **时间戳**：格式为 `YYYYMMDD_HHMMSS`，例如 `20251128_153045`，用于唯一标识备份时间"
+    uid=20_87 LineBreak "
+"
+    uid=20_88 LineBreak "
+"
+    uid=20_89 StaticText "### 2.3 示例"
+    uid=20_90 LineBreak "
+"
+    uid=20_91 LineBreak "
+"
+    uid=20_92 StaticText "- 单一组件项目：`api-call-derby-with-docs-20251128_153045.zip`"
+    uid=20_93 LineBreak "
+"
+    uid=20_94 StaticText "- 多组件项目的前端：`api-call-platform-frontend-with-docs-20251128_153045.zip`"
+    uid=20_95 LineBreak "
+"
+    uid=20_96 StaticText "- 多组件项目的后端：`api-call-platform-backend-with-docs-20251128_153045.zip`"
+    uid=20_97 LineBreak "
+"
+    uid=20_98 StaticText "- 工具类项目：`log-integration-tool-with-docs-20251128_153045.zip`"
+    uid=20_99 LineBreak "
+"
+    uid=20_100 LineBreak "
+"
+    uid=20_101 StaticText "## 3. 压缩文件内容规范"
+    uid=20_102 LineBreak "
+"
+    uid=20_103 LineBreak "
+"
+    uid=20_104 StaticText "### 3.1 必须包含的内容"
+    uid=20_105 LineBreak "
+"
+    uid=20_106 LineBreak "
+"
+    uid=20_107 StaticText "- **源代码目录** (`src/`)：包含完整的项目源代码"
+    uid=20_108 LineBreak "
+"
+    uid=20_109 StaticText "- **文档目录** (`doc/`)：包含项目相关文档"
+    uid=20_110 LineBreak "
+"
+    uid=20_111 StaticText "- **项目配置文件**：如 `pom.xml` (Maven)、`package.json` (Node.js)、`vite.config.js` 等"
+    uid=20_112 LineBreak "
+"
+    uid=20_113 StaticText "- **安装说明**：如 `README.md`、`安装指南.md` 等"
+    uid=20_114 LineBreak "
+"
+    uid=20_115 LineBreak "
+"
+    uid=20_116 StaticText "### 3.2 建议包含的内容"
+    uid=20_117 LineBreak "
+"
+    uid=20_118 LineBreak "
+"
+    uid=20_119 StaticText "- **配置文件示例**：如 `application.properties.example`"
+    uid=20_120 LineBreak "
+"
+    uid=20_121 StaticText "- **构建脚本**：如 `build.sh`、`deploy.sh` 等"
+    uid=20_122 LineBreak "
+"
+    uid=20_123 LineBreak "
+"
+    uid=20_124 StaticText "### 3.3 禁止包含的内容"
+    uid=20_125 LineBreak "
+"
+    uid=20_126 LineBreak "
+"
+    uid=20_127 StaticText "- **目标目录** (`target/`、`dist/`)：编译后生成的文件"
+    uid=20_128 LineBreak "
+"
+    uid=20_129 StaticText "- **依赖目录** (`node_modules/`、`.m2/`)：第三方依赖"
+    uid=20_130 LineBreak "
+"
+    uid=20_131 StaticText "- **日志文件** (`*.log`)"
+    uid=20_132 LineBreak "
+"
+    uid=20_133 StaticText "- **临时文件** (`*.tmp`、`*.temp`)"
+    uid=20_134 LineBreak "
+"
+    uid=20_135 StaticText "- **IDE配置文件** (`.idea/`、`.vscode/`、`*.iml`)"
+    uid=20_136 LineBreak "
+"
+    uid=20_137 StaticText "- **版本控制目录** (`.git/`)"
+    uid=20_138 LineBreak "
+"
+    uid=20_139 LineBreak "
+"
+    uid=20_140 StaticText "## 4. Backups文件夹压缩规范"
+    uid=20_141 LineBreak "
+"
+    uid=20_142 LineBreak "
+"
+    uid=20_143 StaticText "### 4.1 压缩规则"
+    uid=20_144 LineBreak "
+"
+    uid=20_145 LineBreak "
+"
+    uid=20_146 StaticText "每当backups文件夹中的任何文件有更新时，必须执行以下操作："
+    uid=20_147 LineBreak "
+"
+    uid=20_148 StaticText "1. 删除backups目录中已存在的`backups.zip`文件"
+    uid=20_149 LineBreak "
+"
+    uid=20_150 StaticText "2. 重新压缩整个backups目录为新的`backups.zip`文件"
+    uid=20_151 LineBreak "
+"
+    uid=20_152 StaticText "3. 将生成的`backups.zip`文件存储在backups目录中"
+    uid=20_153 LineBreak "
+"
+    uid=20_154 LineBreak "
+"
+    uid=20_155 StaticText "### 4.2 压缩命令"
+    uid=20_156 LineBreak "
+"
+    uid=20_157 LineBreak "
+"
+    uid=20_158 StaticText "```bash"
+    uid=20_159 LineBreak "
+"
+    uid=20_160 StaticText "# 进入backups目录"
+    uid=20_161 LineBreak "
+"
+    uid=20_162 StaticText "cd /Users/hengzai/javaAIProject/debugProject/backups/"
+    uid=20_163 LineBreak "
+"
+    uid=20_164 StaticText "# 删除旧的backups.zip文件"
+    uid=20_165 LineBreak "
+"
+    uid=20_166 StaticText "rm -f backups.zip"
+    uid=20_167 LineBreak "
+"
+    uid=20_168 StaticText "# 压缩整个backups目录为新的backups.zip文件"
+    uid=20_169 LineBreak "
+"
+    uid=20_170 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_171 LineBreak "
+"
+    uid=20_172 StaticText "```"
+    uid=20_173 LineBreak "
+"
+    uid=20_174 LineBreak "
+"
+    uid=20_175 StaticText "### "
+    uid=20_176 StaticText "4.3 注意事项"
+    uid=20_177 LineBreak "
+"
+    uid=20_178 LineBreak "
+"
+    uid=20_179 StaticText "- "
+    uid=20_180 StaticText "压缩时必须排除当前目录下的"
+    uid=20_181 StaticText "`"
+    uid=20_182 StaticText "backups.zip"
+    uid=20_183 StaticText "`"
+    uid=20_184 StaticText "文件本身，避免递归压缩"
+    uid=20_185 LineBreak "
+"
+    uid=20_186 StaticText "- "
+    uid=20_187 StaticText "压缩时建议排除系统生成的隐藏文件（如"
+    uid=20_188 StaticText "`"
+    uid=20_189 StaticText ".DS_Store"
+    uid=20_190 StaticText "`"
+    uid=20_191 StaticText "）"
+    uid=20_192 LineBreak "
+"
+    uid=20_193 StaticText "- "
+    uid=20_194 StaticText "此压缩操作应在所有项目的备份命令执行完成后自动执行"
+    uid=20_195 LineBreak "
+"
+    uid=20_196 LineBreak "
+"
+    uid=20_197 StaticText "## "
+    uid=20_198 StaticText "4. 各个项目的备份传输方式"
+    uid=20_199 LineBreak "
+"
+    uid=20_200 LineBreak "
+"
+    uid=20_201 StaticText "### "
+    uid=20_202 StaticText "4.1 API调用平台项目 (api-call-platform)"
+    uid=20_203 LineBreak "
+"
+    uid=20_204 LineBreak "
+"
+    uid=20_205 StaticText "#### "
+    uid=20_206 StaticText "4.1.1 前端备份"
+    uid=20_207 LineBreak "
+"
+    uid=20_208 LineBreak "
+"
+    uid=20_209 StaticText "**"
+    uid=20_210 StaticText "项目位置"
+    uid=20_211 StaticText "**"
+    uid=20_212 StaticText "："
+    uid=20_213 StaticText "`"
+    uid=20_214 StaticText "/Users/hengzai/javaAIProject/debugProject/api-call-platform/frontend/"
+    uid=20_215 StaticText "`"
+    uid=20_216 LineBreak "
+"
+    uid=20_217 LineBreak "
+"
+    uid=20_218 StaticText "**"
+    uid=20_219 StaticText "备份命令"
+    uid=20_220 StaticText "**"
+    uid=20_221 StaticText "："
+    uid=20_222 LineBreak "
+"
+    uid=20_223 LineBreak "
+"
+    uid=20_224 StaticText "```"
+    uid=20_225 StaticText "bash"
+    uid=20_226 LineBreak "
+"
+    uid=20_227 StaticText "cd /Users/hengzai/javaAIProject/debugProject/api-call-platform/frontend/"
+    uid=20_228 LineBreak "
+"
+    uid=20_229 StaticText "mkdir -p ../../backups/"
+    uid=20_230 LineBreak "
+"
+    uid=20_231 StaticText "# 使用最高压缩级别(-9)并排除更多不必要的文件"
+    uid=20_232 LineBreak "
+"
+    uid=20_233 StaticText "zip -9 -r ../../backups/api-call-platform-frontend-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "node_modules/*" "dist/*" ".git/*" ".idea/*" "*.log" "*.tmp" ".vscode/*" "output.css" "test-styles.html""
+    uid=20_234 LineBreak "
+"
+    uid=20_235 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+    uid=20_236 LineBreak "
+"
+    uid=20_237 StaticText "cd ../../backups/"
+    uid=20_238 LineBreak "
+"
+    uid=20_239 StaticText "# 找到所有api-call-platform-frontend类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+    uid=20_240 LineBreak "
+"
+    uid=20_241 StaticText "ls -1t api-call-platform-frontend-with-docs-*.zip | tail -n +3 | xargs rm -f"
+    uid=20_242 LineBreak "
+"
+    uid=20_243 StaticText "# 压缩整个backups目录为backups.zip文件"
+    uid=20_244 LineBreak "
+"
+    uid=20_245 StaticText "rm -f backups.zip"
+    uid=20_246 LineBreak "
+"
+    uid=20_247 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_248 LineBreak "
+"
+    uid=20_249 StaticText "```"
+    uid=20_250 LineBreak "
+"
+    uid=20_251 LineBreak "
+"
+    uid=20_252 StaticText "**"
+    uid=20_253 StaticText "包含内容"
+    uid=20_254 StaticText "**"
+    uid=20_255 StaticText "："
+    uid=20_256 LineBreak "
+"
+    uid=20_257 LineBreak "
+"
+    uid=20_258 StaticText "- "
+    uid=20_259 StaticText "`"
+    uid=20_260 StaticText "src/"
+    uid=20_261 StaticText "`"
+    uid=20_262 StaticText "：前端源代码"
+    uid=20_263 LineBreak "
+"
+    uid=20_264 StaticText "- "
+    uid=20_265 StaticText "`"
+    uid=20_266 StaticText "doc/"
+    uid=20_267 StaticText "`"
+    uid=20_268 StaticText "：前端相关文档"
+    uid=20_269 LineBreak "
+"
+    uid=20_270 StaticText "- "
+    uid=20_271 StaticText "`"
+    uid=20_272 StaticText "index.html"
+    uid=20_273 StaticText "`"
+    uid=20_274 StaticText "：入口文件"
+    uid=20_275 LineBreak "
+"
+    uid=20_276 StaticText "- "
+    uid=20_277 StaticText "`"
+    uid=20_278 StaticText "package.json"
+    uid=20_279 StaticText "`"
+    uid=20_280 StaticText "：项目配置"
+    uid=20_281 LineBreak "
+"
+    uid=20_282 StaticText "- "
+    uid=20_283 StaticText "`"
+    uid=20_284 StaticText "vite.config.js"
+    uid=20_285 StaticText "`"
+    uid=20_286 StaticText "：构建配置"
+    uid=20_287 LineBreak "
+"
+    uid=20_288 StaticText "- "
+    uid=20_289 StaticText "`"
+    uid=20_290 StaticText "README.md"
+    uid=20_291 StaticText "`"
+    uid=20_292 StaticText "：项目说明"
+    uid=20_293 LineBreak "
+"
+    uid=20_294 LineBreak "
+"
+    uid=20_295 StaticText "#### "
+    uid=20_296 StaticText "4.1.2 后端备份"
+    uid=20_297 LineBreak "
+"
+    uid=20_298 LineBreak "
+"
+    uid=20_299 StaticText "**"
+    uid=20_300 StaticText "项目位置"
+    uid=20_301 StaticText "**"
+    uid=20_302 StaticText "："
+    uid=20_303 StaticText "`"
+    uid=20_304 StaticText "/Users/hengzai/javaAIProject/debugProject/api-call-platform/backend/"
+    uid=20_305 StaticText "`"
+    uid=20_306 LineBreak "
+"
+    uid=20_307 LineBreak "
+"
+    uid=20_308 StaticText "**"
+    uid=20_309 StaticText "备份命令"
+    uid=20_310 StaticText "**"
+    uid=20_311 StaticText "："
+    uid=20_312 LineBreak "
+"
+    uid=20_313 LineBreak "
+"
+    uid=20_314 StaticText "```"
+    uid=20_315 StaticText "bash"
+    uid=20_316 LineBreak "
+"
+    uid=20_317 StaticText "cd /Users/hengzai/javaAIProject/debugProject/api-call-platform/backend/"
+    uid=20_318 LineBreak "
+"
+    uid=20_319 StaticText "mkdir -p ../../backups/"
+    uid=20_320 LineBreak "
+"
+    uid=20_321 StaticText "zip -r ../../backups/api-call-platform-backend-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" ".git/*" ".idea/*" "*.log" "*.tmp""
+    uid=20_322 LineBreak "
+"
+    uid=20_323 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+    uid=20_324 LineBreak "
+"
+    uid=20_325 StaticText "cd ../../backups/"
+    uid=20_326 LineBreak "
+"
+    uid=20_327 StaticText "# 找到所有api-call-platform-backend类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+    uid=20_328 LineBreak "
+"
+    uid=20_329 StaticText "ls -1t api-call-platform-backend-with-docs-*.zip | tail -n +3 | xargs rm -f"
+    uid=20_330 LineBreak "
+"
+    uid=20_331 StaticText "# 压缩整个backups目录为backups.zip文件"
+    uid=20_332 LineBreak "
+"
+    uid=20_333 StaticText "rm -f backups.zip"
+    uid=20_334 LineBreak "
+"
+    uid=20_335 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_336 LineBreak "
+"
+    uid=20_337 StaticText "```"
+    uid=20_338 LineBreak "
+"
+    uid=20_339 LineBreak "
+"
+    uid=20_340 StaticText "**"
+    uid=20_341 StaticText "包含内容"
+    uid=20_342 StaticText "**"
+    uid=20_343 StaticText "："
+    uid=20_344 LineBreak "
+"
+    uid=20_345 LineBreak "
+"
+    uid=20_346 StaticText "- "
+    uid=20_347 StaticText "`"
+    uid=20_348 StaticText "src/"
+    uid=20_349 StaticText "`"
+    uid=20_350 StaticText "：后端源代码"
+    uid=20_351 LineBreak "
+"
+    uid=20_352 StaticText "- "
+    uid=20_353 StaticText "`"
+    uid=20_354 StaticText "pom.xml"
+    uid=20_355 StaticText "`"
+    uid=20_356 StaticText "：项目配置"
+    uid=20_357 LineBreak "
+"
+    uid=20_358 StaticText "- "
+    uid=20_359 StaticText "`"
+    uid=20_360 StaticText "README.md"
+    uid=20_361 StaticText "`"
+    uid=20_362 StaticText "：项目说明"
+    uid=20_363 LineBreak "
+"
+    uid=20_364 LineBreak "
+"
+    uid=20_365 StaticText "### "
+    uid=20_366 StaticText "4.2 API调用Derby项目 (api-call-derby)"
+    uid=20_367 LineBreak "
+"
+    uid=20_368 LineBreak "
+"
+    uid=20_369 StaticText "**"
+    uid=20_370 StaticText "项目位置"
+    uid=20_371 StaticText "**"
+    uid=20_372 StaticText "："
+    uid=20_373 StaticText "`"
+    uid=20_374 StaticText "/Users/hengzai/javaAIProject/debugProject/api-call-derby/"
+    uid=20_375 StaticText "`"
+    uid=20_376 LineBreak "
+"
+    uid=20_377 LineBreak "
+"
+    uid=20_378 StaticText "**"
+    uid=20_379 StaticText "备份命令"
+    uid=20_380 StaticText "**"
+    uid=20_381 StaticText "："
+    uid=20_382 LineBreak "
+"
+    uid=20_383 LineBreak "
+"
+    uid=20_384 StaticText "```"
+    uid=20_385 StaticText "bash"
+    uid=20_386 LineBreak "
+"
+    uid=20_387 StaticText "cd /Users/hengzai/javaAIProject/debugProject/api-call-derby/"
+    uid=20_388 LineBreak "
+"
+    uid=20_389 StaticText "mkdir -p ../backups/"
+    uid=20_390 LineBreak "
+"
+    uid=20_391 StaticText "zip -r ../backups/api-call-derby-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp""
+    uid=20_392 LineBreak "
+"
+    uid=20_393 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+    uid=20_394 LineBreak "
+"
+    uid=20_395 StaticText "cd ../backups/"
+    uid=20_396 LineBreak "
+"
+    uid=20_397 StaticText "# 找到所有api-call-derby类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+    uid=20_398 LineBreak "
+"
+    uid=20_399 StaticText "ls -1t api-call-derby-with-docs-*.zip | tail -n +3 | xargs rm -f"
+    uid=20_400 LineBreak "
+"
+    uid=20_401 StaticText "# 压缩整个backups目录为backups.zip文件"
+    uid=20_402 LineBreak "
+"
+    uid=20_403 StaticText "rm -f backups.zip"
+    uid=20_404 LineBreak "
+"
+    uid=20_405 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_406 LineBreak "
+"
+    uid=20_407 StaticText "```"
+    uid=20_408 LineBreak "
+"
+    uid=20_409 LineBreak "
+"
+    uid=20_410 StaticText "**"
+    uid=20_411 StaticText "包含内容"
+    uid=20_412 StaticText "**"
+    uid=20_413 StaticText "："
+    uid=20_414 LineBreak "
+"
+    uid=20_415 LineBreak "
+"
+    uid=20_416 StaticText "- "
+    uid=20_417 StaticText "`"
+    uid=20_418 StaticText "src/"
+    uid=20_419 StaticText "`"
+    uid=20_420 StaticText "：项目源代码"
+    uid=20_421 LineBreak "
+"
+    uid=20_422 StaticText "- "
+    uid=20_423 StaticText "`"
+    uid=20_424 StaticText "doc/"
+    uid=20_425 StaticText "`"
+    uid=20_426 StaticText "：项目相关文档"
+    uid=20_427 LineBreak "
+"
+    uid=20_428 StaticText "- "
+    uid=20_429 StaticText "`"
+    uid=20_430 StaticText "pom.xml"
+    uid=20_431 StaticText "`"
+    uid=20_432 StaticText "：项目配置"
+    uid=20_433 LineBreak "
+"
+    uid=20_434 StaticText "- "
+    uid=20_435 StaticText "`"
+    uid=20_436 StaticText "安装注意事项.md"
+    uid=20_437 StaticText "`"
+    uid=20_438 StaticText "：安装说明"
+    uid=20_439 LineBreak "
+"
+    uid=20_440 LineBreak "
+"
+    uid=20_441 StaticText "### "
+    uid=20_442 StaticText "4.3 卡片项目 (card)"
+    uid=20_443 LineBreak "
+"
+    uid=20_444 LineBreak "
+"
+    uid=20_445 StaticText "**"
+    uid=20_446 StaticText "项目位置"
+    uid=20_447 StaticText "**"
+    uid=20_448 StaticText "："
+    uid=20_449 StaticText "`"
+    uid=20_450 StaticText "/Users/hengzai/javaAIProject/debugProject/card/"
+    uid=20_451 StaticText "`"
+    uid=20_452 LineBreak "
+"
+    uid=20_453 LineBreak "
+"
+    uid=20_454 StaticText "**"
+    uid=20_455 StaticText "备份命令"
+    uid=20_456 StaticText "**"
+    uid=20_457 StaticText "："
+    uid=20_458 LineBreak "
+"
+    uid=20_459 LineBreak "
+"
+    uid=20_460 StaticText "```"
+    uid=20_461 StaticText "bash"
+    uid=20_462 LineBreak "
+"
+    uid=20_463 StaticText "cd /Users/hengzai/javaAIProject/debugProject/card/"
+    uid=20_464 LineBreak "
+"
+    uid=20_465 StaticText "mkdir -p ../backups/"
+    uid=20_466 LineBreak "
+"
+    uid=20_467 StaticText "zip -r ../backups/card-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp""
+    uid=20_468 LineBreak "
+"
+    uid=20_469 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+    uid=20_470 LineBreak "
+"
+    uid=20_471 StaticText "cd ../backups/"
+    uid=20_472 LineBreak "
+"
+    uid=20_473 StaticText "# 找到所有card类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+    uid=20_474 LineBreak "
+"
+    uid=20_475 StaticText "ls -1t card-with-docs-*.zip | tail -n +3 | xargs rm -f"
+    uid=20_476 LineBreak "
+"
+    uid=20_477 StaticText "# 压缩整个backups目录为backups.zip文件"
+    uid=20_478 LineBreak "
+"
+    uid=20_479 StaticText "rm -f backups.zip"
+    uid=20_480 LineBreak "
+"
+    uid=20_481 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_482 LineBreak "
+"
+    uid=20_483 StaticText "```"
+    uid=20_484 LineBreak "
+"
+    uid=20_485 LineBreak "
+"
+    uid=20_486 StaticText "**"
+    uid=20_487 StaticText "包含内容"
+    uid=20_488 StaticText "**"
+    uid=20_489 StaticText "："
+    uid=20_490 LineBreak "
+"
+    uid=20_491 LineBreak "
+"
+    uid=20_492 StaticText "- "
+    uid=20_493 StaticText "`"
+    uid=20_494 StaticText "src/"
+    uid=20_495 StaticText "`"
+    uid=20_496 StaticText "：项目源代码"
+    uid=20_497 LineBreak "
+"
+    uid=20_498 StaticText "- "
+    uid=20_499 StaticText "`"
+    uid=20_500 StaticText "doc/"
+    uid=20_501 StaticText "`"
+    uid=20_502 StaticText "：项目相关文档"
+    uid=20_503 LineBreak "
+"
+    uid=20_504 StaticText "- "
+    uid=20_505 StaticText "`"
+    uid=20_506 StaticText "pom.xml"
+    uid=20_507 StaticText "`"
+    uid=20_508 StaticText "：项目配置"
+    uid=20_509 LineBreak "
+"
+    uid=20_510 LineBreak "
+"
+    uid=20_511 StaticText "### "
+    uid=20_512 StaticText "4.4 卡片Derby项目 (card-derby)"
+    uid=20_513 LineBreak "
+"
+    uid=20_514 LineBreak "
+"
+    uid=20_515 StaticText "**"
+    uid=20_516 StaticText "项目位置"
+    uid=20_517 StaticText "**"
+    uid=20_518 StaticText "："
+    uid=20_519 StaticText "`"
+    uid=20_520 StaticText "/Users/hengzai/javaAIProject/debugProject/card-derby/"
+    uid=20_521 StaticText "`"
+    uid=20_522 LineBreak "
+"
+    uid=20_523 LineBreak "
+"
+    uid=20_524 StaticText "**"
+    uid=20_525 StaticText "备份命令"
+    uid=20_526 StaticText "**"
+    uid=20_527 StaticText "："
+    uid=20_528 LineBreak "
+"
+    uid=20_529 LineBreak "
+"
+    uid=20_530 StaticText "```"
+    uid=20_531 StaticText "bash"
+    uid=20_532 LineBreak "
+"
+    uid=20_533 StaticText "cd /Users/hengzai/javaAIProject/debugProject/card-derby/"
+    uid=20_534 LineBreak "
+"
+    uid=20_535 StaticText "mkdir -p ../backups/"
+    uid=20_536 LineBreak "
+"
+    uid=20_537 StaticText "zip -r ../backups/card-derby-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp" "logs/*" "carddb/*" "Dockerfile" "docker-compose.yml""
+    uid=20_538 LineBreak "
+"
+    uid=20_539 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+    uid=20_540 LineBreak "
+"
+    uid=20_541 StaticText "cd ../backups/"
+    uid=20_542 LineBreak "
+"
+    uid=20_543 StaticText "# 找到所有card-derby类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+    uid=20_544 LineBreak "
+"
+    uid=20_545 StaticText "ls -1t card-derby-with-docs-*.zip | tail -n +3 | xargs rm -f"
+    uid=20_546 LineBreak "
+"
+    uid=20_547 StaticText "# 压缩整个backups目录为backups.zip文件"
+    uid=20_548 LineBreak "
+"
+    uid=20_549 StaticText "rm -f backups.zip"
+    uid=20_550 LineBreak "
+"
+    uid=20_551 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_552 LineBreak "
+"
+    uid=20_553 StaticText "```"
+    uid=20_554 LineBreak "
+"
+    uid=20_555 LineBreak "
+"
+    uid=20_556 StaticText "**"
+    uid=20_557 StaticText "包含内容"
+    uid=20_558 StaticText "**"
+    uid=20_559 StaticText "："
+    uid=20_560 LineBreak "
+"
+    uid=20_561 LineBreak "
+"
+    uid=20_562 StaticText "- "
+    uid=20_563 StaticText "`"
+    uid=20_564 StaticText "src/"
+    uid=20_565 StaticText "`"
+    uid=20_566 StaticText "：项目源代码"
+    uid=20_567 LineBreak "
+"
+    uid=20_568 StaticText "- "
+    uid=20_569 StaticText "`"
+    uid=20_570 StaticText "pom.xml"
+    uid=20_571 StaticText "`"
+    uid=20_572 StaticText "：项目配置"
+    uid=20_573 LineBreak "
+"
+    uid=20_574 LineBreak "
+"
+    uid=20_575 StaticText "### "
+    uid=20_576 StaticText "4.5 日志集成工具 (log-integration-tool)"
+    uid=20_577 LineBreak "
+"
+    uid=20_578 LineBreak "
+"
+    uid=20_579 StaticText "**"
+    uid=20_580 StaticText "项目位置"
+    uid=20_581 StaticText "**"
+    uid=20_582 StaticText "："
+    uid=20_583 StaticText "`"
+    uid=20_584 StaticText "/Users/hengzai/javaAIProject/debugProject/log-integration-tool/"
+    uid=20_585 StaticText "`"
+    uid=20_586 LineBreak "
+"
+    uid=20_587 LineBreak "
+"
+    uid=20_588 StaticText "**"
+    uid=20_589 StaticText "备份命令"
+    uid=20_590 StaticText "**"
+    uid=20_591 StaticText "："
+    uid=20_592 LineBreak "
+"
+    uid=20_593 LineBreak "
+"
+    uid=20_594 StaticText "```"
+    uid=20_595 StaticText "bash"
+    uid=20_596 LineBreak "
+"
+    uid=20_597 StaticText "cd /Users/hengzai/javaAIProject/debugProject/log-integration-tool/"
+    uid=20_598 LineBreak "
+"
+    uid=20_599 StaticText "mkdir -p ../backups/"
+    uid=20_600 LineBreak "
+"
+    uid=20_601 StaticText "zip -r ../backups/log-integration-tool-with-docs-$(date +%Y%m%d_%H%M%S).zip . -x "target/*" "*.log" "*.tmp""
+    uid=20_602 LineBreak "
+"
+    uid=20_603 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+    uid=20_604 LineBreak "
+"
+    uid=20_605 StaticText "cd ../backups/"
+    uid=20_606 LineBreak "
+"
+    uid=20_607 StaticText "# 找到所有log-integration-tool类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+    uid=20_608 LineBreak "
+"
+    uid=20_609 StaticText "ls -1t log-integration-tool-with-docs-*.zip | tail -n +3 | xargs rm -f"
+    uid=20_610 LineBreak "
+"
+    uid=20_611 StaticText "# 压缩整个backups目录为backups.zip文件"
+    uid=20_612 LineBreak "
+"
+    uid=20_613 StaticText "rm -f backups.zip"
+    uid=20_614 LineBreak "
+"
+    uid=20_615 StaticText "zip -r backups.zip . -x "backups.zip" "*.DS_Store""
+    uid=20_616 LineBreak "
+"
+    uid=20_617 StaticText "```"
+    uid=20_618 LineBreak "
+"
+    uid=20_619 LineBreak "
+"
+    uid=20_620 StaticText "**"
+    uid=20_621 StaticText "包含内容"
+    uid=20_622 StaticText "**"
+    uid=20_623 StaticText "："
+    uid=20_624 LineBreak "
+"
+    uid=20_625 LineBreak "
+"
+    uid=20_626 StaticText "- "
+    uid=20_627 StaticText "`"
+    uid=20_628 StaticText "src/"
+    uid=20_629 StaticText "`"
+    uid=20_630 StaticText "：项目源代码"
+    uid=20_631 LineBreak "
+"
+    uid=20_632 StaticText "- "
+    uid=20_633 StaticText "`"
+    uid=20_634 StaticText "doc/"
+    uid=20_635 StaticText "`"
+    uid=20_636 StaticText "：项目相关文档"
+    uid=20_637 LineBreak "
+"
+    uid=20_638 StaticText "- "
+    uid=20_639 StaticText "`"
+    uid=20_640 StaticText "pom.xml"
+    uid=20_641 StaticText "`"
+    uid=20_642 StaticText "：项目配置"
+    uid=20_643 LineBreak "
+"
+    uid=20_644 LineBreak "
+"
+    uid=20_645 StaticText "## "
+    uid=20_646 StaticText "5. 存储位置规范"
+    uid=20_647 LineBreak "
+"
+    uid=20_648 LineBreak "
+"
+    uid=20_649 StaticText "### "
+    uid=20_650 StaticText "5.1 本地存储"
+    uid=20_651 LineBreak "
+"
+    uid=20_652 LineBreak "
+"
+    uid=20_653 StaticText "- "
+    uid=20_654 StaticText "所有备份文件应统一存储在项目根目录下的 "
+    uid=20_655 StaticText "`"
+    uid=20_656 StaticText "backups/"
+    uid=20_657 StaticText "`"
+    uid=20_658 StaticText " 文件夹中"
+    uid=20_659 LineBreak "
+"
+    uid=20_660 StaticText "- "
+    uid=20_661 StaticText "定期清理过期备份，同类型的文件最多只保留两个，如果超过两个，则根据文件名删除较早的文件"
+    uid=20_662 LineBreak "
+"
+    uid=20_663 LineBreak "
+"
+    uid=20_664 StaticText "### "
+    uid=20_665 StaticText "5.2 远程存储"
+    uid=20_666 LineBreak "
+"
+    uid=20_667 LineBreak "
+"
+    uid=20_668 StaticText "- "
+    uid=20_669 StaticText "重要备份应上传到团队共享的云存储服务"
+    uid=20_670 LineBreak "
+"
+    uid=20_671 StaticText "- "
+    uid=20_672 StaticText "云存储目录结构应与本地保持一致（使用 "
+    uid=20_673 StaticText "`"
+    uid=20_674 StaticText "backups/"
+    uid=20_675 StaticText "`"
+    uid=20_676 StaticText " 文件夹）"
+    uid=20_677 LineBreak "
+"
+    uid=20_678 StaticText "- "
+    uid=20_679 StaticText "备份文件需包含版本信息和时间戳"
+    uid=20_680 LineBreak "
+"
+    uid=20_681 LineBreak "
+"
+    uid=20_682 StaticText "## "
+    uid=20_683 StaticText "6. 版本控制"
+    uid=20_684 LineBreak "
+"
+    uid=20_685 LineBreak "
+"
+    uid=20_686 StaticText "- "
+    uid=20_687 StaticText "备份文件应包含在版本控制系统中"
+    uid=20_688 LineBreak "
+"
+    uid=20_689 StaticText "- "
+    uid=20_690 StaticText "每次重大变更后应创建新的备份"
+    uid=20_691 LineBreak "
+"
+    uid=20_692 StaticText "- "
+    uid=20_693 StaticText "备份文件命名中可选择性包含版本号，如 "
+    uid=20_694 StaticText "`"
+    uid=20_695 StaticText "api-call-derby-v1.0.0-with-docs.zip"
+    uid=20_696 StaticText "`"
+    uid=20_697 LineBreak "
+"
+    uid=20_698 LineBreak "
+"
+    uid=20_699 StaticText "## "
+    uid=20_700 StaticText "7. 恢复流程"
+    uid=20_701 LineBreak "
+"
+    uid=20_702 LineBreak "
+"
+    uid=20_703 StaticText "### "
+    uid=20_704 StaticText "7.1 解压命令"
+    uid=20_705 LineBreak "
+"
+    uid=20_706 LineBreak "
+"
+    uid=20_707 StaticText "```"
+    uid=20_708 StaticText "bash"
+    uid=20_709 LineBreak "
+"
+    uid=20_710 StaticText "unzip {备份文件名}.zip -d {目标目录}"
+    uid=20_711 LineBreak "
+"
+    uid=20_712 StaticText "```"
+    uid=20_713 LineBreak "
+"
+    uid=20_714 LineBreak "
+"
+    uid=20_715 StaticText "### "
+    uid=20_716 StaticText "7.2 恢复步骤"
+    uid=20_717 LineBreak "
+"
+    uid=20_718 LineBreak "
+"
+    uid=20_719 StaticText "1. "
+    uid=20_720 StaticText "解压备份文件到目标目录"
+    uid=20_721 LineBreak "
+"
+    uid=20_722 StaticText "2. "
+    uid=20_723 StaticText "安装依赖（"
+    uid=20_724 StaticText "`"
+    uid=20_725 StaticText "npm install"
+    uid=20_726 StaticText "`"
+    uid=20_727 StaticText " 或 "
+    uid=20_728 StaticText "`"
+    uid=20_729 StaticText "mvn install"
+    uid=20_730 StaticText "`"
+    uid=20_731 StaticText "）"
+    uid=20_732 LineBreak "
+"
+    uid=20_733 StaticText "3. "
+    uid=20_734 StaticText "配置项目参数"
+    uid=20_735 LineBreak "
+"
+    uid=20_736 StaticText "4. "
+    uid=20_737 StaticText "构建项目（"
+    uid=20_738 StaticText "`"
+    uid=20_739 StaticText "npm run build"
+    uid=20_740 StaticText "`"
+    uid=20_741 StaticText " 或 "
+    uid=20_742 StaticText "`"
+    uid=20_743 StaticText "mvn package"
+    uid=20_744 StaticText "`"
+    uid=20_745 StaticText "）"
+    uid=20_746 LineBreak "
+"
+    uid=20_747 StaticText "5. "
+    uid=20_748 StaticText "启动服务"
+    uid=20_749 LineBreak "
+"
+    uid=20_750 LineBreak "
+"
+    uid=20_751 StaticText "## "
+    uid=20_752 StaticText "8. 检查清单"
+    uid=20_753 LineBreak "
+"
+    uid=20_754 LineBreak "
+"
+    uid=20_755 StaticText "在创建备份前，请检查以下内容："
+    uid=20_756 LineBreak "
+"
+    uid=20_757 LineBreak "
+"
+    uid=20_758 StaticText "- "
+    uid=20_759 StaticText "["
+    uid=20_760 StaticText " "
+    uid=20_761 StaticText "] "
+    uid=20_762 StaticText "所有源代码已提交到版本控制系统"
+    uid=20_763 LineBreak "
+"
+    uid=20_764 StaticText "- "
+    uid=20_765 StaticText "["
+    uid=20_766 StaticText " "
+    uid=20_767 StaticText "] "
+    uid=20_768 StaticText "文档已更新到最新版本"
+    uid=20_769 LineBreak "
+"
+    uid=20_770 StaticText "- "
+    uid=20_771 StaticText "["
+    uid=20_772 StaticText " "
+    uid=20_773 StaticText "] "
+    uid=20_774 StaticText "已排除不需要备份的文件和目录"
+    uid=20_775 LineBreak "
+"
+    uid=20_776 StaticText "- "
+    uid=20_777 StaticText "["
+    uid=20_778 StaticText " "
+    uid=20_779 StaticText "] "
+    uid=20_780 StaticText "备份文件命名符合规范"
+    uid=20_781 LineBreak "
+"
+    uid=20_782 StaticText "- "
+    uid=20_783 StaticText "["
+    uid=20_784 StaticText " "
+    uid=20_785 StaticText "] "
+    uid=20_786 StaticText "备份文件已存储到指定位置"
+    uid=20_787 LineBreak "
+"
+    uid=20_788 LineBreak "
+"
+    uid=20_789 StaticText "## "
+    uid=20_790 StaticText "9. 变更记录"
+    uid=20_791 LineBreak "
+"
+    uid=20_792 LineBreak "
+"
+    uid=20_793 StaticText "| 版本 | 日期       | 变更内容               | 变更人 |
+|------|------------|------------------------|--------|
+| 1.1  | 2025-11-28 | 更新备份规范：统一存储目录、添加时间戳 | 系统架构师 |
+| 1.0  | 2025-11-28 | 初始版本               | 系统架构师 |"
+    uid=20_794 LineBreak "
+"
+    uid=20_795 LineBreak "
+"
+    uid=20_796 StaticText "## "
+    uid=20_797 StaticText "9. 数据库初始化SQL管理"
+    uid=20_798 LineBreak "
+"
+    uid=20_799 LineBreak "
+"
+    uid=20_800 StaticText "### "
+    uid=20_801 StaticText "9.1 初始化SQL文件生成"
+    uid=20_802 LineBreak "
+"
+    uid=20_803 LineBreak "
+"
+    uid=20_804 StaticText "- "
+    uid=20_805 StaticText "**"
+    uid=20_806 StaticText "MySQL"
+    uid=20_807 StaticText "**"
+    uid=20_808 StaticText ": 通过MCP工具查询数据库表结构自动生成"
+    uid=20_809 LineBreak "
+"
+    uid=20_810 StaticText "- "
+    uid=20_811 StaticText "**"
+    uid=20_812 StaticText "Derby"
+    uid=20_813 StaticText "**"
+    uid=20_814 StaticText ": 从项目初始化SQL文件中提取和整合"
+    uid=20_815 LineBreak "
+"
+    uid=20_816 LineBreak "
+"
+    uid=20_817 StaticText "### "
+    uid=20_818 StaticText "9.2 初始化SQL文件内容"
+    uid=20_819 LineBreak "
+"
+    uid=20_820 LineBreak "
+"
+    uid=20_821 StaticText "- "
+    uid=20_822 StaticText "包含所有必要的表结构创建语句"
+    uid=20_823 LineBreak "
+"
+    uid=20_824 StaticText "- "
+    uid=20_825 StaticText "不包含测试数据（测试数据单独管理）"
+    uid=20_826 LineBreak "
+"
+    uid=20_827 StaticText "- "
+    uid=20_828 StaticText "文件命名格式："
+    uid=20_829 StaticText "`"
+    uid=20_830 StaticText "{数据库类型}_init.sql"
+    uid=20_831 StaticText "`"
+    uid=20_832 LineBreak "
+"
+    uid=20_833 LineBreak "
+"
+    uid=20_834 StaticText "### "
+    uid=20_835 StaticText "9.3 存储位置"
+    uid=20_836 LineBreak "
+"
+    uid=20_837 LineBreak "
+"
+    uid=20_838 StaticText "所有初始化SQL文件统一存储在项目根目录下的"
+    uid=20_839 StaticText "`"
+    uid=20_840 StaticText "backups/"
+    uid=20_841 StaticText "`"
+    uid=20_842 StaticText "文件夹中"
+    uid=20_843 LineBreak "
+"
+    uid=20_844 LineBreak "
+"
+    uid=20_845 StaticText "## "
+    uid=20_846 StaticText "10. 变更记录"
+    uid=20_847 LineBreak "
+"
+    uid=20_848 LineBreak "
+"
+    uid=20_849 StaticText "| 版本 | 日期       | 变更内容               | 变更人 |
+|------|------------|------------------------|--------|
+| 1.5  | 2025-12-01 | 新增backups文件夹压缩规范：当backups文件夹内容更新时，自动压缩为backups.zip并删除旧文件 | 系统架构师 |
+| 1.4  | 2025-12-01 | 更新备份策略：同类型文件最多保留两个，超过则删除较早文件 | 系统架构师 |
+| 1.3  | 2025-12-01 | 优化前端备份策略：使用最高压缩级别、清理旧备份文件、排除更多不必要文件 | 系统架构师 |
+| 1.2  | 2025-11-28 | 添加数据库初始化SQL管理规范 | 系统架构师 |
+| 1.1  | 2025-11-28 | 更新备份规范：统一存储目录、添加时间戳 | 系统架构师 |
+| 1.0  | 2025-11-28 | 初始版本               | 系统架构师 |"
+    uid=20_850 LineBreak "
+"
+    uid=20_851 LineBreak "
+"
+    uid=20_852 StaticText "## "
+    uid=20_853 StaticText "11. 附录"
+    uid=20_854 LineBreak "
+"
+    uid=20_855 LineBreak "
+"
+    uid=20_856 StaticText "### "
+    uid=20_857 StaticText "11.1 压缩命令示例"
+    uid=20_858 LineBreak "
+"
+    uid=20_859 LineBreak "
+"
+    uid=20_860 StaticText "```"
+    uid=20_861 StaticText "bash"
+    uid=20_862 LineBreak "
+"
+    uid=20_863 StaticText "# Linux/MacOS - 标准压缩"
+    uid=20_864 LineBreak "
+"
+    uid=20_865 StaticText "zip -r {项目名称}-{组件类型}-with-docs.zip . -x "*.git/*" "target/*" "node_modules/*" "*.log" "*.tmp""
+    uid=20_866 LineBreak "
+"
+    uid=20_867 LineBreak "
+"
+    uid=20_868 StaticText "# Linux/MacOS - 最高压缩级别（推荐）"
+    uid=20_869 LineBreak "
+"
+    uid=20_870 StaticText "zip -9 -r {项目名称}-{组件类型}-with-docs.zip . -x "*.git/*" "target/*" "node_modules/*" "*.log" "*.tmp""
+    uid=20_871 LineBreak "
+"
+    uid=20_872 LineBreak "
+"
+    uid=20_873 StaticText "# 添加时间戳的备份命令示例"
+    uid=20_874 LineBreak "
+"
+    uid=20_875 StaticText "zip -9 -r backup-$(date +%Y%m%d_%H%M%S).zip . -x "*.git/*" "target/*" "node_modules/*" "*.log" "*.tmp""
+    uid=20_876 LineBreak "
+"
+    uid=20_877 StaticText "```"
+    uid=20_878 LineBreak "
+"
+    uid=20_879 LineBreak "
+"
+    uid=20_880 StaticText "### "
+    uid=20_881 StaticText "11.2 解压命令示例"
+    uid=20_882 LineBreak "
+"
+    uid=20_883 LineBreak "
+"
+    uid=20_884 StaticText "```"
+    uid=20_885 StaticText "bash"
+    uid=20_886 LineBreak "
+"
+    uid=20_887 StaticText "# Linux/MacOS"
+    uid=20_888 LineBreak "
+"
+    uid=20_889 StaticText "unzip {项目名称}-{组件类型}-with-docs.zip -d {目标目录}"
+    uid=20_890 LineBreak "
+"
+    uid=20_891 StaticText "```"
+    uid=20_892 LineBreak "
+"
+    uid=20_893 LineBreak "
+"
+    uid=20_894 StaticText "### "
+    uid=20_895 StaticText "11.3 初始化SQL文件使用示例"
+    uid=20_896 LineBreak "
+"
+    uid=20_897 LineBreak "
+"
+    uid=20_898 StaticText "```"
+    uid=20_899 StaticText "bash"
+    uid=20_900 LineBreak "
+"
+    uid=20_901 StaticText "# MySQL"
+    uid=20_902 LineBreak "
+"
+    uid=20_903 StaticText "mysql -u root -p < backups/mysql_init.sql"
+    uid=20_904 LineBreak "
+"
+    uid=20_905 LineBreak "
+"
+    uid=20_906 StaticText "# Derby"
+    uid=20_907 LineBreak "
+"
+    uid=20_908 StaticText "# 启动Derby网络服务器后，使用ij工具执行"
+    uid=20_909 LineBreak "
+"
+    uid=20_910 StaticText "ij> connect 'jdbc:derby://localhost:1527/yourdb;create=true;user=app;password=app';"
+    uid=20_911 LineBreak "
+"
+    uid=20_912 StaticText "ij> run 'backups/derby_init.sql';"
+    uid=20_913 LineBreak "
+"
+    uid=20_914 StaticText "```"
+    uid=20_915 LineBreak "
+"
+    uid=20_916 LineBreak "
+"
+    uid=20_917 StaticText "```"
+    uid=20_918 LineBreak "
+"
+    uid=20_919 LineBreak "
+"
+    uid=20_920 StaticText "```"
+    uid=20_921 LineBreak "
+"
+    uid=20_922 LineBreak "
+"
+  uid=20_923 button "Desktop"
+  uid=20_924 button "Tablet"
+  uid=20_925 button "Mobile/Wechat"
+  uid=20_926 button "复制到公众号"
+  uid=20_927 button "复制到知乎"
+  uid=20_928 heading "备份传输规范" level="1"
+  uid=20_929 heading "1. 概述" level="2"
+  uid=20_930 StaticText "本文档定义了项目代码的备份和传输规范，旨在确保代码备份的一致性、完整性和可追溯性，便于团队成员在不同环境间传输和共享代码。"
+  uid=20_931 heading "2. 压缩文件命名规范" level="2"
+  uid=20_932 heading "2.1 命名格式" level="3"
+  uid=20_933 StaticText "{项目名称}-{组件类型}-with-docs-{时间戳}.zip"
+  uid=20_934 StaticText "### 2.2 命名说明
+
+- **项目名称**：使用项目的标准英文名称，如 `api-call-derby`、`api-call-platform`、`card`、`log-integration-tool`
+- **组件类型**：如果项目包含多个组件，需指定组件类型，如 `frontend`、`backend`；如果项目只有单一组件，可以省略
+- **with-docs**：固定后缀，表示压缩包包含文档
+- **时间戳**：格式为 `YYYYMMDD_HHMMSS`，例如 `20251128_153045`，用于唯一标识备份时间
+
+### 2.3 示例
+
+- 单一组件项目：`api-call-derby-with-docs-20251128_153045.zip`
+- 多组件项目的前端：`api-call-platform-frontend-with-docs-20251128_153045.zip`
+- 多组件项目的后端：`api-call-platform-backend-with-docs-20251128_153045.zip`
+- 工具类项目：`log-integration-tool-with-docs-20251128_153045.zip`
+
+## 3. 压缩文件内容规范
+
+### 3.1 必须包含的内容
+
+- **源代码目录** (`src/`)：包含完整的项目源代码
+- **文档目录** (`doc/`)：包含项目相关文档
+- **项目配置文件**：如 `pom.xml` (Maven)、`package.json` (Node.js)、`vite.config.js` 等
+- **安装说明**：如 `README.md`、`安装指南.md` 等
+
+### 3.2 建议包含的内容
+
+- **配置文件示例**：如 `application.properties.example`
+- **构建脚本**：如 `build.sh`、`deploy.sh` 等
+
+### 3.3 禁止包含的内容
+
+- **目标目录** (`target/`、`dist/`)：编译后生成的文件
+- **依赖目录** (`node_modules/`、`.m2/`)：第三方依赖
+- **日志文件** (`*.log`)
+- **临时文件** (`*.tmp`、`*.temp`)
+- **IDE配置文件** (`.idea/`、`.vscode/`、`*.iml`)
+- **版本控制目录** (`.git/`)
+
+## 4. Backups文件夹压缩规范
+
+### 4.1 压缩规则
+
+每当backups文件夹中的任何文件有更新时，必须执行以下操作：
+1. 删除backups目录中已存在的`backups.zip`文件
+2. 重新压缩整个backups目录为新的`backups.zip`文件
+3. 将生成的`backups.zip`文件存储在backups目录中
+
+### 4.2 压缩命令
+
+```bash
+# 进入backups目录
+cd /Users/hengzai/javaAIProject/debugProject/backups/
+# 删除旧的backups.zip文件
+rm -f backups.zip
+# 压缩整个backups目录为新的backups.zip文件
+zip -r backups.zip . -x "backups.zip" "*.DS_Store"
+"
+  uid=20_935 StaticText "​"
+  uid=20_936 heading "4.3 注意事项" level="3"
+  uid=20_937 StaticText "压缩时必须排除当前目录下的"
+  uid=20_938 StaticText "backups.zip"
+  uid=20_939 StaticText "文件本身，避免递归压缩"
+  uid=20_940 StaticText "压缩时建议排除系统生成的隐藏文件（如"
+  uid=20_941 StaticText ".DS_Store"
+  uid=20_942 StaticText "）"
+  uid=20_943 StaticText "此压缩操作应在所有项目的备份命令执行完成后自动执行"
+  uid=20_944 heading "4. 各个项目的备份传输方式" level="2"
+  uid=20_945 heading "4.1 API调用平台项目 (api-call-platform)" level="3"
+  uid=20_946 heading "4.1.1 前端备份" level="4"
+  uid=20_947 StaticText "项目位置"
+  uid=20_948 StaticText "："
+  uid=20_949 StaticText "/Users/hengzai/javaAIProject/debugProject/api-call-platform/frontend/"
+  uid=20_950 StaticText "备份命令"
+  uid=20_951 StaticText "："
+  uid=20_952 StaticText "cd"
+  uid=20_953 StaticText " /Users/hengzai/javaAIProject/debugProject/api-call-platform/frontend/
+"
+  uid=20_954 StaticText "mkdir"
+  uid=20_955 StaticText " -p ../../backups/
+"
+  uid=20_956 StaticText "# 使用最高压缩级别(-9)并排除更多不必要的文件"
+  uid=20_957 StaticText "
+zip -9 -r ../../backups/api-call-platform-frontend-with-docs-$("
+  uid=20_958 StaticText "date"
+  uid=20_959 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_960 StaticText ""node_modules/*""
+  uid=20_961 StaticText " "
+  uid=20_962 StaticText ""dist/*""
+  uid=20_963 StaticText " "
+  uid=20_964 StaticText "".git/*""
+  uid=20_965 StaticText " "
+  uid=20_966 StaticText "".idea/*""
+  uid=20_967 StaticText " "
+  uid=20_968 StaticText ""*.log""
+  uid=20_969 StaticText " "
+  uid=20_970 StaticText ""*.tmp""
+  uid=20_971 StaticText " "
+  uid=20_972 StaticText "".vscode/*""
+  uid=20_973 StaticText " "
+  uid=20_974 StaticText ""output.css""
+  uid=20_975 StaticText " "
+  uid=20_976 StaticText ""test-styles.html""
+  uid=20_977 StaticText "
+"
+  uid=20_978 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+  uid=20_979 StaticText "
+"
+  uid=20_980 StaticText "cd"
+  uid=20_981 StaticText " ../../backups/
+"
+  uid=20_982 StaticText "# 找到所有api-call-platform-frontend类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+  uid=20_983 StaticText "
+"
+  uid=20_984 StaticText "ls"
+  uid=20_985 StaticText " -1t api-call-platform-frontend-with-docs-*.zip | "
+  uid=20_986 StaticText "tail"
+  uid=20_987 StaticText " -n +3 | xargs "
+  uid=20_988 StaticText "rm"
+  uid=20_989 StaticText " -f
+"
+  uid=20_990 StaticText "# 压缩整个backups目录为backups.zip文件"
+  uid=20_991 StaticText "
+"
+  uid=20_992 StaticText "rm"
+  uid=20_993 StaticText " -f backups.zip
+zip -r backups.zip . -x "
+  uid=20_994 StaticText ""backups.zip""
+  uid=20_995 StaticText " "
+  uid=20_996 StaticText ""*.DS_Store""
+  uid=20_997 StaticText "
+"
+  uid=20_998 StaticText "​"
+  uid=20_999 StaticText "包含内容"
+  uid=20_1000 StaticText "："
+  uid=20_1001 StaticText "src/"
+  uid=20_1002 StaticText "：前端源代码"
+  uid=20_1003 StaticText "doc/"
+  uid=20_1004 StaticText "：前端相关文档"
+  uid=20_1005 StaticText "index.html"
+  uid=20_1006 StaticText "：入口文件"
+  uid=20_1007 StaticText "package.json"
+  uid=20_1008 StaticText "：项目配置"
+  uid=20_1009 StaticText "vite.config.js"
+  uid=20_1010 StaticText "：构建配置"
+  uid=20_1011 StaticText "README.md"
+  uid=20_1012 StaticText "：项目说明"
+  uid=20_1013 heading "4.1.2 后端备份" level="4"
+  uid=20_1014 StaticText "项目位置"
+  uid=20_1015 StaticText "："
+  uid=20_1016 StaticText "/Users/hengzai/javaAIProject/debugProject/api-call-platform/backend/"
+  uid=20_1017 StaticText "备份命令"
+  uid=20_1018 StaticText "："
+  uid=20_1019 StaticText "cd"
+  uid=20_1020 StaticText " /Users/hengzai/javaAIProject/debugProject/api-call-platform/backend/
+"
+  uid=20_1021 StaticText "mkdir"
+  uid=20_1022 StaticText " -p ../../backups/
+zip -r ../../backups/api-call-platform-backend-with-docs-$("
+  uid=20_1023 StaticText "date"
+  uid=20_1024 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_1025 StaticText ""target/*""
+  uid=20_1026 StaticText " "
+  uid=20_1027 StaticText "".git/*""
+  uid=20_1028 StaticText " "
+  uid=20_1029 StaticText "".idea/*""
+  uid=20_1030 StaticText " "
+  uid=20_1031 StaticText ""*.log""
+  uid=20_1032 StaticText " "
+  uid=20_1033 StaticText ""*.tmp""
+  uid=20_1034 StaticText "
+"
+  uid=20_1035 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+  uid=20_1036 StaticText "
+"
+  uid=20_1037 StaticText "cd"
+  uid=20_1038 StaticText " ../../backups/
+"
+  uid=20_1039 StaticText "# 找到所有api-call-platform-backend类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+  uid=20_1040 StaticText "
+"
+  uid=20_1041 StaticText "ls"
+  uid=20_1042 StaticText " -1t api-call-platform-backend-with-docs-*.zip | "
+  uid=20_1043 StaticText "tail"
+  uid=20_1044 StaticText " -n +3 | xargs "
+  uid=20_1045 StaticText "rm"
+  uid=20_1046 StaticText " -f
+"
+  uid=20_1047 StaticText "# 压缩整个backups目录为backups.zip文件"
+  uid=20_1048 StaticText "
+"
+  uid=20_1049 StaticText "rm"
+  uid=20_1050 StaticText " -f backups.zip
+zip -r backups.zip . -x "
+  uid=20_1051 StaticText ""backups.zip""
+  uid=20_1052 StaticText " "
+  uid=20_1053 StaticText ""*.DS_Store""
+  uid=20_1054 StaticText "
+"
+  uid=20_1055 StaticText "​"
+  uid=20_1056 StaticText "包含内容"
+  uid=20_1057 StaticText "："
+  uid=20_1058 StaticText "src/"
+  uid=20_1059 StaticText "：后端源代码"
+  uid=20_1060 StaticText "pom.xml"
+  uid=20_1061 StaticText "：项目配置"
+  uid=20_1062 StaticText "README.md"
+  uid=20_1063 StaticText "：项目说明"
+  uid=20_1064 heading "4.2 API调用Derby项目 (api-call-derby)" level="3"
+  uid=20_1065 StaticText "项目位置"
+  uid=20_1066 StaticText "："
+  uid=20_1067 StaticText "/Users/hengzai/javaAIProject/debugProject/api-call-derby/"
+  uid=20_1068 StaticText "备份命令"
+  uid=20_1069 StaticText "："
+  uid=20_1070 StaticText "cd"
+  uid=20_1071 StaticText " /Users/hengzai/javaAIProject/debugProject/api-call-derby/
+"
+  uid=20_1072 StaticText "mkdir"
+  uid=20_1073 StaticText " -p ../backups/
+zip -r ../backups/api-call-derby-with-docs-$("
+  uid=20_1074 StaticText "date"
+  uid=20_1075 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_1076 StaticText ""target/*""
+  uid=20_1077 StaticText " "
+  uid=20_1078 StaticText ""*.log""
+  uid=20_1079 StaticText " "
+  uid=20_1080 StaticText ""*.tmp""
+  uid=20_1081 StaticText "
+"
+  uid=20_1082 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+  uid=20_1083 StaticText "
+"
+  uid=20_1084 StaticText "cd"
+  uid=20_1085 StaticText " ../backups/
+"
+  uid=20_1086 StaticText "# 找到所有api-call-derby类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+  uid=20_1087 StaticText "
+"
+  uid=20_1088 StaticText "ls"
+  uid=20_1089 StaticText " -1t api-call-derby-with-docs-*.zip | "
+  uid=20_1090 StaticText "tail"
+  uid=20_1091 StaticText " -n +3 | xargs "
+  uid=20_1092 StaticText "rm"
+  uid=20_1093 StaticText " -f
+"
+  uid=20_1094 StaticText "# 压缩整个backups目录为backups.zip文件"
+  uid=20_1095 StaticText "
+"
+  uid=20_1096 StaticText "rm"
+  uid=20_1097 StaticText " -f backups.zip
+zip -r backups.zip . -x "
+  uid=20_1098 StaticText ""backups.zip""
+  uid=20_1099 StaticText " "
+  uid=20_1100 StaticText ""*.DS_Store""
+  uid=20_1101 StaticText "
+"
+  uid=20_1102 StaticText "​"
+  uid=20_1103 StaticText "包含内容"
+  uid=20_1104 StaticText "："
+  uid=20_1105 StaticText "src/"
+  uid=20_1106 StaticText "：项目源代码"
+  uid=20_1107 StaticText "doc/"
+  uid=20_1108 StaticText "：项目相关文档"
+  uid=20_1109 StaticText "pom.xml"
+  uid=20_1110 StaticText "：项目配置"
+  uid=20_1111 StaticText "安装注意事项.md"
+  uid=20_1112 StaticText "：安装说明"
+  uid=20_1113 heading "4.3 卡片项目 (card)" level="3"
+  uid=20_1114 StaticText "项目位置"
+  uid=20_1115 StaticText "："
+  uid=20_1116 StaticText "/Users/hengzai/javaAIProject/debugProject/card/"
+  uid=20_1117 StaticText "备份命令"
+  uid=20_1118 StaticText "："
+  uid=20_1119 StaticText "cd"
+  uid=20_1120 StaticText " /Users/hengzai/javaAIProject/debugProject/card/
+"
+  uid=20_1121 StaticText "mkdir"
+  uid=20_1122 StaticText " -p ../backups/
+zip -r ../backups/card-with-docs-$("
+  uid=20_1123 StaticText "date"
+  uid=20_1124 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_1125 StaticText ""target/*""
+  uid=20_1126 StaticText " "
+  uid=20_1127 StaticText ""*.log""
+  uid=20_1128 StaticText " "
+  uid=20_1129 StaticText ""*.tmp""
+  uid=20_1130 StaticText "
+"
+  uid=20_1131 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+  uid=20_1132 StaticText "
+"
+  uid=20_1133 StaticText "cd"
+  uid=20_1134 StaticText " ../backups/
+"
+  uid=20_1135 StaticText "# 找到所有card类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+  uid=20_1136 StaticText "
+"
+  uid=20_1137 StaticText "ls"
+  uid=20_1138 StaticText " -1t card-with-docs-*.zip | "
+  uid=20_1139 StaticText "tail"
+  uid=20_1140 StaticText " -n +3 | xargs "
+  uid=20_1141 StaticText "rm"
+  uid=20_1142 StaticText " -f
+"
+  uid=20_1143 StaticText "# 压缩整个backups目录为backups.zip文件"
+  uid=20_1144 StaticText "
+"
+  uid=20_1145 StaticText "rm"
+  uid=20_1146 StaticText " -f backups.zip
+zip -r backups.zip . -x "
+  uid=20_1147 StaticText ""backups.zip""
+  uid=20_1148 StaticText " "
+  uid=20_1149 StaticText ""*.DS_Store""
+  uid=20_1150 StaticText "
+"
+  uid=20_1151 StaticText "​"
+  uid=20_1152 StaticText "包含内容"
+  uid=20_1153 StaticText "："
+  uid=20_1154 StaticText "src/"
+  uid=20_1155 StaticText "：项目源代码"
+  uid=20_1156 StaticText "doc/"
+  uid=20_1157 StaticText "：项目相关文档"
+  uid=20_1158 StaticText "pom.xml"
+  uid=20_1159 StaticText "：项目配置"
+  uid=20_1160 heading "4.4 卡片Derby项目 (card-derby)" level="3"
+  uid=20_1161 StaticText "项目位置"
+  uid=20_1162 StaticText "："
+  uid=20_1163 StaticText "/Users/hengzai/javaAIProject/debugProject/card-derby/"
+  uid=20_1164 StaticText "备份命令"
+  uid=20_1165 StaticText "："
+  uid=20_1166 StaticText "cd"
+  uid=20_1167 StaticText " /Users/hengzai/javaAIProject/debugProject/card-derby/
+"
+  uid=20_1168 StaticText "mkdir"
+  uid=20_1169 StaticText " -p ../backups/
+zip -r ../backups/card-derby-with-docs-$("
+  uid=20_1170 StaticText "date"
+  uid=20_1171 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_1172 StaticText ""target/*""
+  uid=20_1173 StaticText " "
+  uid=20_1174 StaticText ""*.log""
+  uid=20_1175 StaticText " "
+  uid=20_1176 StaticText ""*.tmp""
+  uid=20_1177 StaticText " "
+  uid=20_1178 StaticText ""logs/*""
+  uid=20_1179 StaticText " "
+  uid=20_1180 StaticText ""carddb/*""
+  uid=20_1181 StaticText " "
+  uid=20_1182 StaticText ""Dockerfile""
+  uid=20_1183 StaticText " "
+  uid=20_1184 StaticText ""docker-compose.yml""
+  uid=20_1185 StaticText "
+"
+  uid=20_1186 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+  uid=20_1187 StaticText "
+"
+  uid=20_1188 StaticText "cd"
+  uid=20_1189 StaticText " ../backups/
+"
+  uid=20_1190 StaticText "# 找到所有card-derby类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+  uid=20_1191 StaticText "
+"
+  uid=20_1192 StaticText "ls"
+  uid=20_1193 StaticText " -1t card-derby-with-docs-*.zip | "
+  uid=20_1194 StaticText "tail"
+  uid=20_1195 StaticText " -n +3 | xargs "
+  uid=20_1196 StaticText "rm"
+  uid=20_1197 StaticText " -f
+"
+  uid=20_1198 StaticText "# 压缩整个backups目录为backups.zip文件"
+  uid=20_1199 StaticText "
+"
+  uid=20_1200 StaticText "rm"
+  uid=20_1201 StaticText " -f backups.zip
+zip -r backups.zip . -x "
+  uid=20_1202 StaticText ""backups.zip""
+  uid=20_1203 StaticText " "
+  uid=20_1204 StaticText ""*.DS_Store""
+  uid=20_1205 StaticText "
+"
+  uid=20_1206 StaticText "​"
+  uid=20_1207 StaticText "包含内容"
+  uid=20_1208 StaticText "："
+  uid=20_1209 StaticText "src/"
+  uid=20_1210 StaticText "：项目源代码"
+  uid=20_1211 StaticText "pom.xml"
+  uid=20_1212 StaticText "：项目配置"
+  uid=20_1213 heading "4.5 日志集成工具 (log-integration-tool)" level="3"
+  uid=20_1214 StaticText "项目位置"
+  uid=20_1215 StaticText "："
+  uid=20_1216 StaticText "/Users/hengzai/javaAIProject/debugProject/log-integration-tool/"
+  uid=20_1217 StaticText "备份命令"
+  uid=20_1218 StaticText "："
+  uid=20_1219 StaticText "cd"
+  uid=20_1220 StaticText " /Users/hengzai/javaAIProject/debugProject/log-integration-tool/
+"
+  uid=20_1221 StaticText "mkdir"
+  uid=20_1222 StaticText " -p ../backups/
+zip -r ../backups/log-integration-tool-with-docs-$("
+  uid=20_1223 StaticText "date"
+  uid=20_1224 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_1225 StaticText ""target/*""
+  uid=20_1226 StaticText " "
+  uid=20_1227 StaticText ""*.log""
+  uid=20_1228 StaticText " "
+  uid=20_1229 StaticText ""*.tmp""
+  uid=20_1230 StaticText "
+"
+  uid=20_1231 StaticText "# 清理旧备份文件，同类型文件最多保留两个"
+  uid=20_1232 StaticText "
+"
+  uid=20_1233 StaticText "cd"
+  uid=20_1234 StaticText " ../backups/
+"
+  uid=20_1235 StaticText "# 找到所有log-integration-tool类型的备份文件，按时间戳排序，删除除最新两个之外的所有文件"
+  uid=20_1236 StaticText "
+"
+  uid=20_1237 StaticText "ls"
+  uid=20_1238 StaticText " -1t log-integration-tool-with-docs-*.zip | "
+  uid=20_1239 StaticText "tail"
+  uid=20_1240 StaticText " -n +3 | xargs "
+  uid=20_1241 StaticText "rm"
+  uid=20_1242 StaticText " -f
+"
+  uid=20_1243 StaticText "# 压缩整个backups目录为backups.zip文件"
+  uid=20_1244 StaticText "
+"
+  uid=20_1245 StaticText "rm"
+  uid=20_1246 StaticText " -f backups.zip
+zip -r backups.zip . -x "
+  uid=20_1247 StaticText ""backups.zip""
+  uid=20_1248 StaticText " "
+  uid=20_1249 StaticText ""*.DS_Store""
+  uid=20_1250 StaticText "
+"
+  uid=20_1251 StaticText "​"
+  uid=20_1252 StaticText "包含内容"
+  uid=20_1253 StaticText "："
+  uid=20_1254 StaticText "src/"
+  uid=20_1255 StaticText "：项目源代码"
+  uid=20_1256 StaticText "doc/"
+  uid=20_1257 StaticText "：项目相关文档"
+  uid=20_1258 StaticText "pom.xml"
+  uid=20_1259 StaticText "：项目配置"
+  uid=20_1260 heading "5. 存储位置规范" level="2"
+  uid=20_1261 heading "5.1 本地存储" level="3"
+  uid=20_1262 StaticText "所有备份文件应统一存储在项目根目录下的 "
+  uid=20_1263 StaticText "backups/"
+  uid=20_1264 StaticText " 文件夹中"
+  uid=20_1265 StaticText "定期清理过期备份，同类型的文件最多只保留两个，如果超过两个，则根据文件名删除较早的文件"
+  uid=20_1266 heading "5.2 远程存储" level="3"
+  uid=20_1267 StaticText "重要备份应上传到团队共享的云存储服务"
+  uid=20_1268 StaticText "云存储目录结构应与本地保持一致（使用 "
+  uid=20_1269 StaticText "backups/"
+  uid=20_1270 StaticText " 文件夹）"
+  uid=20_1271 StaticText "备份文件需包含版本信息和时间戳"
+  uid=20_1272 heading "6. 版本控制" level="2"
+  uid=20_1273 StaticText "备份文件应包含在版本控制系统中"
+  uid=20_1274 StaticText "每次重大变更后应创建新的备份"
+  uid=20_1275 StaticText "备份文件命名中可选择性包含版本号，如 "
+  uid=20_1276 StaticText "api-call-derby-v1.0.0-with-docs.zip"
+  uid=20_1277 heading "7. 恢复流程" level="2"
+  uid=20_1278 heading "7.1 解压命令" level="3"
+  uid=20_1279 StaticText "unzip {备份文件名}.zip -d {目标目录}
+"
+  uid=20_1280 StaticText "​"
+  uid=20_1281 heading "7.2 恢复步骤" level="3"
+  uid=20_1282 StaticText "解压备份文件到目标目录"
+  uid=20_1283 StaticText "安装依赖（"
+  uid=20_1284 StaticText "npm install"
+  uid=20_1285 StaticText " 或 "
+  uid=20_1286 StaticText "mvn install"
+  uid=20_1287 StaticText "）"
+  uid=20_1288 StaticText "配置项目参数"
+  uid=20_1289 StaticText "构建项目（"
+  uid=20_1290 StaticText "npm run build"
+  uid=20_1291 StaticText " 或 "
+  uid=20_1292 StaticText "mvn package"
+  uid=20_1293 StaticText "）"
+  uid=20_1294 StaticText "启动服务"
+  uid=20_1295 heading "8. 检查清单" level="2"
+  uid=20_1296 StaticText "在创建备份前，请检查以下内容："
+  uid=20_1297 checkbox disableable disabled
+  uid=20_1298 StaticText " 所有源代码已提交到版本控制系统"
+  uid=20_1299 checkbox disableable disabled
+  uid=20_1300 StaticText " 文档已更新到最新版本"
+  uid=20_1301 checkbox disableable disabled
+  uid=20_1302 StaticText " 已排除不需要备份的文件和目录"
+  uid=20_1303 checkbox disableable disabled
+  uid=20_1304 StaticText " 备份文件命名符合规范"
+  uid=20_1305 checkbox disableable disabled
+  uid=20_1306 StaticText " 备份文件已存储到指定位置"
+  uid=20_1307 heading "9. 变更记录" level="2"
+  uid=20_1308 StaticText "版本"
+  uid=20_1309 StaticText "日期"
+  uid=20_1310 StaticText "变更内容"
+  uid=20_1311 StaticText "变更人"
+  uid=20_1312 StaticText "1.1"
+  uid=20_1313 StaticText "2025-11-28"
+  uid=20_1314 StaticText "更新备份规范：统一存储目录、添加时间戳"
+  uid=20_1315 StaticText "系统架构师"
+  uid=20_1316 StaticText "1.0"
+  uid=20_1317 StaticText "2025-11-28"
+  uid=20_1318 StaticText "初始版本"
+  uid=20_1319 StaticText "系统架构师"
+  uid=20_1320 heading "9. 数据库初始化SQL管理" level="2"
+  uid=20_1321 heading "9.1 初始化SQL文件生成" level="3"
+  uid=20_1322 StaticText "MySQL"
+  uid=20_1323 StaticText ": 通过MCP工具查询数据库表结构自动生成"
+  uid=20_1324 StaticText "Derby"
+  uid=20_1325 StaticText ": 从项目初始化SQL文件中提取和整合"
+  uid=20_1326 heading "9.2 初始化SQL文件内容" level="3"
+  uid=20_1327 StaticText "包含所有必要的表结构创建语句"
+  uid=20_1328 StaticText "不包含测试数据（测试数据单独管理）"
+  uid=20_1329 StaticText "文件命名格式："
+  uid=20_1330 StaticText "{数据库类型}_init.sql"
+  uid=20_1331 heading "9.3 存储位置" level="3"
+  uid=20_1332 StaticText "所有初始化SQL文件统一存储在项目根目录下的"
+  uid=20_1333 StaticText "backups/"
+  uid=20_1334 StaticText "文件夹中"
+  uid=20_1335 heading "10. 变更记录" level="2"
+  uid=20_1336 StaticText "版本"
+  uid=20_1337 StaticText "日期"
+  uid=20_1338 StaticText "变更内容"
+  uid=20_1339 StaticText "变更人"
+  uid=20_1340 StaticText "1.5"
+  uid=20_1341 StaticText "2025-12-01"
+  uid=20_1342 StaticText "新增backups文件夹压缩规范：当backups文件夹内容更新时，自动压缩为backups.zip并删除旧文件"
+  uid=20_1343 StaticText "系统架构师"
+  uid=20_1344 StaticText "1.4"
+  uid=20_1345 StaticText "2025-12-01"
+  uid=20_1346 StaticText "更新备份策略：同类型文件最多保留两个，超过则删除较早文件"
+  uid=20_1347 StaticText "系统架构师"
+  uid=20_1348 StaticText "1.3"
+  uid=20_1349 StaticText "2025-12-01"
+  uid=20_1350 StaticText "优化前端备份策略：使用最高压缩级别、清理旧备份文件、排除更多不必要文件"
+  uid=20_1351 StaticText "系统架构师"
+  uid=20_1352 StaticText "1.2"
+  uid=20_1353 StaticText "2025-11-28"
+  uid=20_1354 StaticText "添加数据库初始化SQL管理规范"
+  uid=20_1355 StaticText "系统架构师"
+  uid=20_1356 StaticText "1.1"
+  uid=20_1357 StaticText "2025-11-28"
+  uid=20_1358 StaticText "更新备份规范：统一存储目录、添加时间戳"
+  uid=20_1359 StaticText "系统架构师"
+  uid=20_1360 StaticText "1.0"
+  uid=20_1361 StaticText "2025-11-28"
+  uid=20_1362 StaticText "初始版本"
+  uid=20_1363 StaticText "系统架构师"
+  uid=20_1364 heading "11. 附录" level="2"
+  uid=20_1365 heading "11.1 压缩命令示例" level="3"
+  uid=20_1366 StaticText "# Linux/MacOS - 标准压缩"
+  uid=20_1367 StaticText "
+zip -r {项目名称}-{组件类型}-with-docs.zip . -x "
+  uid=20_1368 StaticText ""*.git/*""
+  uid=20_1369 StaticText " "
+  uid=20_1370 StaticText ""target/*""
+  uid=20_1371 StaticText " "
+  uid=20_1372 StaticText ""node_modules/*""
+  uid=20_1373 StaticText " "
+  uid=20_1374 StaticText ""*.log""
+  uid=20_1375 StaticText " "
+  uid=20_1376 StaticText ""*.tmp""
+  uid=20_1377 StaticText "
+
+"
+  uid=20_1378 StaticText "# Linux/MacOS - 最高压缩级别（推荐）"
+  uid=20_1379 StaticText "
+zip -9 -r {项目名称}-{组件类型}-with-docs.zip . -x "
+  uid=20_1380 StaticText ""*.git/*""
+  uid=20_1381 StaticText " "
+  uid=20_1382 StaticText ""target/*""
+  uid=20_1383 StaticText " "
+  uid=20_1384 StaticText ""node_modules/*""
+  uid=20_1385 StaticText " "
+  uid=20_1386 StaticText ""*.log""
+  uid=20_1387 StaticText " "
+  uid=20_1388 StaticText ""*.tmp""
+  uid=20_1389 StaticText "
+
+"
+  uid=20_1390 StaticText "# 添加时间戳的备份命令示例"
+  uid=20_1391 StaticText "
+zip -9 -r backup-$("
+  uid=20_1392 StaticText "date"
+  uid=20_1393 StaticText " +%Y%m%d_%H%M%S).zip . -x "
+  uid=20_1394 StaticText ""*.git/*""
+  uid=20_1395 StaticText " "
+  uid=20_1396 StaticText ""target/*""
+  uid=20_1397 StaticText " "
+  uid=20_1398 StaticText ""node_modules/*""
+  uid=20_1399 StaticText " "
+  uid=20_1400 StaticText ""*.log""
+  uid=20_1401 StaticText " "
+  uid=20_1402 StaticText ""*.tmp""
+  uid=20_1403 StaticText "
+"
+  uid=20_1404 StaticText "​"
+  uid=20_1405 heading "11.2 解压命令示例" level="3"
+  uid=20_1406 StaticText "# Linux/MacOS"
+  uid=20_1407 StaticText "
+unzip {项目名称}-{组件类型}-with-docs.zip -d {目标目录}
+"
+  uid=20_1408 StaticText "​"
+  uid=20_1409 heading "11.3 初始化SQL文件使用示例" level="3"
+  uid=20_1410 StaticText "# MySQL"
+  uid=20_1411 StaticText "
+mysql -u root -p < backups/mysql_init.sql
+
+"
+  uid=20_1412 StaticText "# Derby"
+  uid=20_1413 StaticText "
+"
+  uid=20_1414 StaticText "# 启动Derby网络服务器后，使用ij工具执行"
+  uid=20_1415 StaticText "
+ij> connect "
+  uid=20_1416 StaticText "'jdbc:derby://localhost:1527/yourdb;create=true;user=app;password=app'"
+  uid=20_1417 StaticText ";
+ij> run "
+  uid=20_1418 StaticText "'backups/derby_init.sql'"
+  uid=20_1419 StaticText ";
+"
+  uid=20_1420 StaticText "​"
+  uid=20_1421 StaticText "
+"
+  uid=20_1422 StaticText "​"
+  uid=20_1423 Iframe
+    uid=20_1424 RootWebArea url="about:blank"

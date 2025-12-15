@@ -1,5 +1,6 @@
 package com.example.gitbook.controller;
 
+import com.example.gitbook.dto.ApiResponseDTO;
 import com.example.gitbook.entity.ArticleContent;
 import com.example.gitbook.service.ArticleContentService;
 import org.springframework.http.ResponseEntity;
@@ -59,5 +60,40 @@ public class ArticleContentController {
     public ResponseEntity<Boolean> deleteContent(@PathVariable Long id) {
         boolean result = articleContentService.deleteContent(id);
         return ResponseEntity.ok(result);
+    }
+    
+    /**
+     * 同步文章内容
+     * @param request 包含categoryId和filePath的请求体
+     * @return 同步结果
+     */
+    @PostMapping("/sync")
+    public ResponseEntity<ApiResponseDTO<Boolean>> syncArticles(@RequestBody SyncRequest request) {
+        ApiResponseDTO<Boolean> result = articleContentService.syncArticles(request.getCategoryId(), request.getFilePath());
+        return ResponseEntity.ok(result);
+    }
+    
+    /**
+     * 同步请求参数
+     */
+    static class SyncRequest {
+        private Long categoryId;
+        private String filePath;
+        
+        public Long getCategoryId() {
+            return categoryId;
+        }
+        
+        public void setCategoryId(Long categoryId) {
+            this.categoryId = categoryId;
+        }
+        
+        public String getFilePath() {
+            return filePath;
+        }
+        
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
     }
 }

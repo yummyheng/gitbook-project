@@ -21,6 +21,9 @@ target/
 derby.log
 gitbook_db/
 
+# Database configuration
+application-datasource.yml
+
 # Logs
 logs/
 *.log

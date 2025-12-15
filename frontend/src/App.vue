@@ -6,9 +6,8 @@
       </div>
       <div class="header-actions">
         <el-button type="primary" @click="saveArticle">保存</el-button>
-        <el-button @click="togglePreview">
-          {{ vditor && vditor.options && vditor.options.mode === 'preview' ? '编辑' : '预览' }}
-        </el-button>
+        <el-button type="success" @click="syncArticles">一键同步</el-button>
+        <el-button type="danger" @click="deleteArticle">删除</el-button>
       </div>
     </div>
     
@@ -21,6 +20,8 @@
             :expanded-keys="defaultExpandedKeys"
             :default-checked-keys="defaultCheckedKeys"
             @node-click="handleNodeClick"
+            @add-child="handleAddChild"
+            @add-sibling="handleAddSibling"
           ></ArticleTree>
         </div>
       
@@ -59,7 +60,6 @@ export default {
     }
   },
   mounted() {
-    this.initArticleTree()
     this.initEditor()
   },
   methods: {
@@ -67,6 +67,7 @@ export default {
       // 从后端API获取文章树数据
       this.$http.get('/categories/tree')
         .then(response => {
+          // 后端已返回label字段，直接使用
           this.articleTree = response.data
           
           // 默认展开所有节点
@@ -111,6 +112,11 @@ export default {
           }
         }
       })
+      
+      // 编辑器初始化后延迟加载文章树，不依赖ready事件
+      setTimeout(() => {
+        this.initArticleTree()
+      }, 500)
     },
     
     handleNodeClick(data) {
@@ -166,7 +172,7 @@ export default {
             this.$message.success('文章已保存')
             
             // 保存成功后重新获取当前分类下的文章内容，确保显示最新数据
-            this.$http.get(`/articles/category/${this.selectedNode.id}`)
+              this.$http.get(`/articles/category/${this.selectedNode.id}`)
               .then(res => {
                 const updatedArticle = res.data
                 if (updatedArticle) {
@@ -187,14 +193,146 @@ export default {
         })
     },
     
-    togglePreview() {
-      // 切换编辑/预览模式
-      if (this.vditor) {
-        const currentMode = this.vditor.options.mode
-        this.vditor.setOptions({
-          mode: currentMode === 'sv' ? 'preview' : 'sv'
-        })
+
+    
+    syncArticles() {
+      // 一键同步文章内容
+      if (!this.selectedNode) {
+        this.$message.warning('请先选择一个分类节点')
+        return
       }
+      
+      // 显示对话框让用户输入文件路径
+      this.$prompt('请输入要同步的文件路径', '文件同步', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[^\s]+$/, // 不允许输入空白字符
+        inputErrorMessage: '文件路径不能为空'
+      }).then(({ value }) => {
+        // 调用后端API进行同步
+        return this.$http.post('/articles/sync', {
+          categoryId: this.selectedNode.id,
+          filePath: value
+        })
+      })
+      .then(response => {
+        console.log('同步结果:', response.data)
+        if (response.data.success) {
+          this.$message.success('同步成功')
+          // 重新加载文章树和当前文章内容
+          this.initArticleTree()
+          this.handleNodeClick(this.selectedNode)
+        } else {
+          this.$message.error('同步失败: ' + response.data.message)
+        }
+      })
+      .catch(error => {
+        // 处理用户取消操作
+        if (error?.message !== 'cancel') {
+          console.error('同步失败:', error)
+          this.$message.error('同步失败: ' + (error.response?.data?.message || error.message))
+        }
+      })
+    },
+    
+    deleteArticle() {
+      // 删除文章或分类
+      if (!this.selectedNode) {
+        this.$message.warning('请先选择一个节点')
+        return
+      }
+      
+      // 所有树节点都是分类节点，执行分类删除
+      const isCategory = true
+      const deleteUrl = `/categories/${this.selectedNode.id}`
+      const deleteType = '分类'
+      
+      // 直接执行删除操作，无需确认对话框
+      this.$http.delete(deleteUrl)
+      .then(response => {
+        console.log(`${deleteType}删除成功:`, response.data)
+        this.$message.success(`${deleteType}删除成功`)
+        
+        // 重新加载文章树
+        this.initArticleTree()
+        
+        // 清空编辑器内容
+        this.vditor.setValue('')
+        this.selectedNode = null
+        this.currentArticleId = null
+      })
+      .catch(error => {
+        console.error(`${deleteType}删除失败:`, error)
+        this.$message.error(`${deleteType}删除失败`)
+      })
+    },
+    
+    handleAddChild(data) {
+      // 处理新增子节点
+      this.$prompt('请输入新子节点名称', '新增子节点', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[^\s]+$/, // 不允许输入空白字符
+        inputErrorMessage: '节点名称不能为空'
+      }).then(({ value }) => {
+        // 构建新分类数据
+        const newCategory = {
+          label: value,
+          parentId: data.id,
+          level: data.level + 1 // 新节点级别为父节点级别+1
+        }
+        
+        // 调用后端API添加新分类
+      this.$http.post('/categories', newCategory)
+        .then(response => {
+          console.log('添加子节点成功:', response.data)
+          this.$message.success('添加子节点成功')
+          
+          // 重新加载文章树
+          this.initArticleTree()
+        })
+        .catch(error => {
+          console.error('添加子节点失败:', error)
+          this.$message.error('添加子节点失败')
+        })
+      }).catch(() => {
+        // 取消添加
+        console.log('取消添加子节点')
+      })
+    },
+    
+    handleAddSibling(data) {
+      // 处理新增同级节点
+      this.$prompt('请输入新同级节点名称', '新增同级节点', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[^\s]+$/, // 不允许输入空白字符
+        inputErrorMessage: '节点名称不能为空'
+      }).then(({ value }) => {
+        // 构建新分类数据
+        const newCategory = {
+          label: value,
+          parentId: data.parentId,
+          level: data.level // 新节点与当前节点级别相同
+        }
+        
+        // 调用后端API添加新分类
+        this.$http.post('/categories', newCategory)
+        .then(response => {
+          console.log('添加同级节点成功:', response.data)
+          this.$message.success('添加同级节点成功')
+          
+          // 重新加载文章树
+          this.initArticleTree()
+        })
+        .catch(error => {
+          console.error('添加同级节点失败:', error)
+          this.$message.error('添加同级节点失败')
+        })
+      }).catch(() => {
+        // 取消添加
+        console.log('取消添加同级节点')
+      })
     }
   }
 }
