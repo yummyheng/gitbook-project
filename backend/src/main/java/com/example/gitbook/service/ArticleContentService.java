@@ -51,4 +51,11 @@ public interface ArticleContentService {
      * @return 同步结果
      */
     ApiResponseDTO<Boolean> syncArticles(Long categoryId, String filePath);
+    
+    /**
+     * 导出文章内容
+     * @param categoryId 分类ID
+     * @return 导出结果（包含zip文件流）
+     */
+    ApiResponseDTO<byte[]> exportArticles(Long categoryId);
 }

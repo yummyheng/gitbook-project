@@ -12,10 +12,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 文章内容服务实现类
@@ -104,6 +105,36 @@ public class ArticleContentServiceImpl implements ArticleContentService {
         } catch (Exception e) {
             String message = "同步失败: " + e.getMessage();
             System.err.println("ArticleContentServiceImpl.syncArticles - Error: " + message);
+            e.printStackTrace();
+            return ApiResponseDTO.fail(message);
+        }
+    }
+    
+    @Override
+    public ApiResponseDTO<byte[]> exportArticles(Long categoryId) {
+        System.out.println("ArticleContentServiceImpl.exportArticles - categoryId: " + categoryId);
+        
+        try {
+            // 获取分类信息
+            ArticleCategory category = articleCategoryMapper.selectById(categoryId);
+            if (category == null) {
+                String message = "分类不存在: " + categoryId;
+                System.out.println("ArticleContentServiceImpl.exportArticles - " + message);
+                return ApiResponseDTO.fail(message);
+            }
+            
+            // 创建临时文件用于存储zip内容
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (ZipOutputStream zipOut = new ZipOutputStream(outputStream)) {
+                // 递归处理分类及其子分类
+                processCategoryForExport(category, "", zipOut);
+            }
+            
+            System.out.println("ArticleContentServiceImpl.exportArticles - Export completed successfully.");
+            return ApiResponseDTO.success(outputStream.toByteArray());
+        } catch (Exception e) {
+            String message = "导出失败: " + e.getMessage();
+            System.err.println("ArticleContentServiceImpl.exportArticles - Error: " + message);
             e.printStackTrace();
             return ApiResponseDTO.fail(message);
         }
@@ -359,5 +390,75 @@ public class ArticleContentServiceImpl implements ArticleContentService {
         
         // 如果没有#标题，尝试匹配文件名
         return null;
+    }
+    
+    /**
+     * 递归处理分类及其子分类，将文章内容打包成zip文件
+     */
+    private void processCategoryForExport(ArticleCategory category, String pathPrefix, ZipOutputStream zipOut) throws Exception {
+        System.out.println("ArticleContentServiceImpl.processCategoryForExport - categoryId: " + category.getId() + ", label: " + category.getLabel() + ", pathPrefix: " + pathPrefix);
+        
+        // 获取当前分类的所有子分类
+        LambdaQueryWrapper<ArticleCategory> categoryWrapper = new LambdaQueryWrapper<>();
+        categoryWrapper.eq(ArticleCategory::getParentId, category.getId());
+        List<ArticleCategory> subCategories = articleCategoryMapper.selectList(categoryWrapper);
+        
+        // 判断是否为最底层分类（没有子分类）
+        boolean isLeafCategory = subCategories.isEmpty();
+        
+        // 获取当前分类下的文章内容
+        List<ArticleContent> articles = getAllContentsByCategoryId(category.getId());
+        if (!articles.isEmpty()) {
+            // 构造当前分类的文件路径前缀
+            String articlesPath;
+            if (isLeafCategory) {
+                // 最底层分类，不创建同名文件夹，直接使用父路径
+                articlesPath = pathPrefix;
+            } else {
+                // 非最底层分类，创建同名文件夹
+                articlesPath = pathPrefix.isEmpty() ? category.getLabel() : pathPrefix + File.separator + category.getLabel();
+            }
+            
+            for (ArticleContent article : articles) {
+                // 构造markdown文件路径
+                String fileName = article.getTitle() + ".md";
+                String filePath;
+                if (articlesPath.isEmpty()) {
+                    // 顶级分类且是最底层分类
+                    filePath = fileName;
+                } else {
+                    // 其他情况
+                    filePath = articlesPath + File.separator + fileName;
+                }
+                
+                // 创建zip条目
+                ZipEntry zipEntry = new ZipEntry(filePath);
+                zipOut.putNextEntry(zipEntry);
+                
+                // 写入markdown内容
+                if (article.getContent() != null) {
+                    zipOut.write(article.getContent().getBytes("UTF-8"));
+                }
+                
+                // 关闭zip条目
+                zipOut.closeEntry();
+                
+                System.out.println("ArticleContentServiceImpl.processCategoryForExport - Added file: " + filePath);
+            }
+        }
+        
+        // 递归处理子分类
+        String subCategoryPath;
+        if (isLeafCategory) {
+            // 最底层分类，子分类路径与当前路径相同
+            subCategoryPath = pathPrefix;
+        } else {
+            // 非最底层分类，子分类路径包含当前分类文件夹
+            subCategoryPath = pathPrefix.isEmpty() ? category.getLabel() : pathPrefix + File.separator + category.getLabel();
+        }
+        
+        for (ArticleCategory subCategory : subCategories) {
+            processCategoryForExport(subCategory, subCategoryPath, zipOut);
+        }
     }
 }

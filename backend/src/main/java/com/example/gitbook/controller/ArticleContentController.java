@@ -96,4 +96,22 @@ public class ArticleContentController {
             this.filePath = filePath;
         }
     }
+    
+    /**
+     * 导出文章内容
+     * @param categoryId 分类ID
+     * @return 导出的zip文件
+     */
+    @GetMapping("/export/{categoryId}")
+    public ResponseEntity<byte[]> exportArticles(@PathVariable Long categoryId) {
+        ApiResponseDTO<byte[]> result = articleContentService.exportArticles(categoryId);
+        if (result.isSuccess() && result.getData() != null) {
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=gitbook-export.zip")
+                    .header("Content-Type", "application/zip")
+                    .body(result.getData());
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

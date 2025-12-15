@@ -7,6 +7,7 @@
       <div class="header-actions">
         <el-button type="primary" @click="saveArticle">保存</el-button>
         <el-button type="success" @click="syncArticles">一键同步</el-button>
+        <el-button type="info" @click="exportArticles">一键导出</el-button>
         <el-button type="danger" @click="deleteArticle">删除</el-button>
       </div>
     </div>
@@ -264,6 +265,41 @@ export default {
       .catch(error => {
         console.error(`${deleteType}删除失败:`, error)
         this.$message.error(`${deleteType}删除失败`)
+      })
+    },
+    
+    exportArticles() {
+      // 导出文章内容
+      if (!this.selectedNode) {
+        this.$message.warning('请先选择一个分类节点')
+        return
+      }
+      
+      // 调用后端API进行导出
+      this.$http.get(`/articles/export/${this.selectedNode.id}`, {
+        responseType: 'blob' // 设置响应类型为blob，用于下载文件
+      })
+      .then(response => {
+        console.log('导出结果:', response)
+        
+        // 创建下载链接并触发下载
+        const blob = new Blob([response.data], { type: 'application/zip' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'gitbook-export.zip'
+        document.body.appendChild(link)
+        link.click()
+        
+        // 清理资源
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+        
+        this.$message.success('导出成功')
+      })
+      .catch(error => {
+        console.error('导出失败:', error)
+        this.$message.error('导出失败')
       })
     },
     

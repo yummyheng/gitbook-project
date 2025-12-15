@@ -48,3 +48,10 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Test files
+*.class
+*.zip
+
+# Backups
+backups/
