@@ -105,6 +105,8 @@ export default {
           container: '#vditor-preview',
           delay: 100
         },
+        // 配置本地cdn路径，指向node_modules中的vditor资源
+        cdn: '/node_modules/vditor',
         value: '',
         on: {
           change: (value) => {
