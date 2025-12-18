@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -194,5 +198,113 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
                     }
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArticleCategory> getArticleTree(Integer tagId) {
+        // 获取所有分类
+        List<ArticleCategory> allCategories = articleCategoryMapper.selectList(null);
+        
+        // 如果tagId为0或null，返回所有分类的完整树形结构
+        if (tagId == null || tagId == 0) {
+            return buildTree(allCategories, 0L);
+        } else {
+            // 1. 找到所有带有指定标签的分类（根节点）
+            List<Long> rootTagIds = allCategories.stream()
+                    .filter(category -> category.getTagId() != null && tagId.equals(category.getTagId()))
+                    .map(ArticleCategory::getId)
+                    .collect(Collectors.toList());
+            
+            // 2. 获取这些根节点及其所有子节点的ID
+            Set<Long> categoryIds = new HashSet<>();
+            for (Long rootId : rootTagIds) {
+                // 添加根节点
+                categoryIds.add(rootId);
+                // 递归添加所有子节点
+                getAllChildrenIds(rootId, allCategories, categoryIds);
+            }
+            
+            // 3. 过滤出需要显示的分类
+            List<ArticleCategory> filteredCategories = allCategories.stream()
+                    .filter(category -> categoryIds.contains(category.getId()))
+                    .collect(Collectors.toList());
+            
+            // 4. 构建树形结构，以带有标签的节点为根节点
+            List<ArticleCategory> result = new ArrayList<>();
+            for (Long rootId : rootTagIds) {
+                // 找到当前根节点
+                filteredCategories.stream()
+                        .filter(category -> category.getId().equals(rootId))
+                        .findFirst()
+                        .ifPresent(rootNode -> {
+                            // 为根节点递归获取子节点，使用所有分类列表以确保能找到所有子节点
+                            List<ArticleCategory> children = buildTree(allCategories, rootNode.getId());
+                            rootNode.setChildren(children);
+                            result.add(rootNode);
+                        });
+            }
+            return result;
+        }
+    }
+    
+    /**
+     * 递归获取指定分类的所有子分类ID
+     * @param categoryId 分类ID
+     * @param allCategories 所有分类列表
+     * @param categoryIds 收集子分类ID的集合
+     */
+    private void getAllChildrenIds(Long categoryId, List<ArticleCategory> allCategories, Set<Long> categoryIds) {
+        // 查找所有直接子分类
+        List<ArticleCategory> directChildren = allCategories.stream()
+                .filter(category -> categoryId.equals(category.getParentId()))
+                .collect(Collectors.toList());
+        
+        // 添加直接子分类ID并递归获取子分类的子分类
+        for (ArticleCategory child : directChildren) {
+            categoryIds.add(child.getId());
+            getAllChildrenIds(child.getId(), allCategories, categoryIds);
+        }
+    }
+
+    @Override
+    public boolean addTagToCategory(Long categoryId, Integer tagId) {
+        // 查询分类
+        ArticleCategory category = articleCategoryMapper.selectById(categoryId);
+        if (category == null) {
+            return false;
+        }
+        
+        // 更新标签ID
+        category.setTagId(tagId);
+        category.setUpdateTime(new Date());
+        
+        // 保存更新
+        return articleCategoryMapper.updateById(category) > 0;
+    }
+
+    @Override
+    public boolean removeTagFromCategory(Long categoryId) {
+        // 移除标签实际上是将tagId设置为0
+        return addTagToCategory(categoryId, 0);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllTags() {
+        // 返回5个固定标签
+        List<Map<String, Object>> tags = new ArrayList<>();
+        
+        Map<String, Object> defaultTag = new java.util.HashMap<>();
+        defaultTag.put("id", 0);
+        defaultTag.put("name", "默认");
+        tags.add(defaultTag);
+        
+        for (int i = 1; i <= 4; i++) {
+            Map<String, Object> tag = new java.util.HashMap<>();
+            tag.put("id", i);
+            tag.put("name", "标签" + i);
+            tags.add(tag);
+        }
+        
+        return tags;
     }
 }

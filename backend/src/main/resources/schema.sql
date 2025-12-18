@@ -7,6 +7,7 @@ CREATE TABLE article_category (
     sort INTEGER DEFAULT 0,
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tag_id INT DEFAULT 0,
     PRIMARY KEY (id)
 );
 

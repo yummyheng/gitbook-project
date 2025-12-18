@@ -114,4 +114,18 @@ public class ArticleContentController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    
+    /**
+     * 搜索文章内容（支持标签过滤）
+     * @param keyword 搜索关键词
+     * @param tagId 标签ID
+     * @return 文章内容列表
+     */
+    @GetMapping("/search")
+    public ResponseEntity<java.util.List<ArticleContent>> searchArticles(
+            @RequestParam(required = true) String keyword,
+            @RequestParam(required = false, defaultValue = "0") Integer tagId) {
+        java.util.List<ArticleContent> articles = articleContentService.searchArticles(keyword, tagId);
+        return ResponseEntity.ok(articles);
+    }
 }

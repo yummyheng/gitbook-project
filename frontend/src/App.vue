@@ -1,16 +1,12 @@
 <template>
   <div class="app-container">
-    <div class="header">
-      <div class="header-title">
-        <h1>GitBook</h1>
-      </div>
-      <div class="header-actions">
-        <el-button type="primary" @click="saveArticle">保存</el-button>
-        <el-button type="success" @click="syncArticles">一键同步</el-button>
-        <el-button type="info" @click="exportArticles">一键导出</el-button>
-        <el-button type="danger" @click="deleteArticle">删除</el-button>
-      </div>
-    </div>
+    <Header
+      @save-article="saveArticle"
+      @sync-articles="syncArticles"
+      @export-articles="exportArticles"
+      @delete-article="deleteArticle"
+      @tag-change="handleTagChange"
+    ></Header>
     
     <div class="main-content">
         <!-- 左侧文章树面板 -->
@@ -23,28 +19,30 @@
             @node-click="handleNodeClick"
             @add-child="handleAddChild"
             @add-sibling="handleAddSibling"
+            @tag-updated="initArticleTree"
           ></ArticleTree>
         </div>
       
       <!-- 右侧markdown编辑器区域 -->
-      <div class="content">
-        <div class="editor-container">
-          <div id="vditor"></div>
-        </div>
-      </div>
+      <Editor
+        ref="editor"
+        @content-change="handleContentChange"
+      ></Editor>
     </div>
   </div>
 </template>
 
 <script>
-import Vditor from 'vditor'
-import 'vditor/dist/index.css'
 import ArticleTree from './components/ArticleTree.vue'
+import Header from './components/Header.vue'
+import Editor from './components/Editor.vue'
 
 export default {
   name: 'App',
   components: {
-    ArticleTree
+    ArticleTree,
+    Header,
+    Editor
   },
   data() {
     return {
@@ -57,16 +55,19 @@ export default {
       defaultCheckedKeys: [],
       selectedNode: null,
       currentArticleId: null,
-      vditor: null
+      selectedTag: 0 // 当前选中的标签ID，默认值为0（默认标签）
     }
   },
   mounted() {
-    this.initEditor()
+    // 组件挂载后直接初始化文章树
+    this.initArticleTree()
   },
   methods: {
     initArticleTree() {
-      // 从后端API获取文章树数据
-      this.$http.get('/categories/tree')
+      // 从后端API获取文章树数据，支持标签过滤
+      this.$http.get('/categories/tree/by-tag', {
+        params: { tagId: this.selectedTag }
+      })
         .then(response => {
           // 后端已返回label字段，直接使用
           this.articleTree = response.data
@@ -95,31 +96,11 @@ export default {
           this.$message.error('获取文章树失败')
         })
     },
-    
-    initEditor() {
-      // 初始化vditor编辑器
-      this.vditor = new Vditor('vditor', {
-        height: window.innerHeight - 100,
-        mode: 'sv', // 同时显示编辑和预览
-        preview: {
-          container: '#vditor-preview',
-          delay: 100
-        },
-        // 配置本地cdn路径，指向node_modules中的vditor资源
-        cdn: '/node_modules/vditor',
-        value: '',
-        on: {
-          change: (value) => {
-            // 编辑器内容变化时的处理
-            console.log('Editor content changed:', value)
-          }
-        }
-      })
-      
-      // 编辑器初始化后延迟加载文章树，不依赖ready事件
-      setTimeout(() => {
-        this.initArticleTree()
-      }, 500)
+    handleTagChange(tagId) {
+      // 处理标签变化事件
+      this.selectedTag = tagId
+      // 根据新的标签ID重新获取文章树
+      this.initArticleTree()
     },
     
     handleNodeClick(data) {
@@ -134,12 +115,12 @@ export default {
           const article = response.data
           console.log('Fetched article:', article)
           if (article) {
-            this.vditor.setValue(article.content)
+            this.$refs.editor.setValue(article.content)
             this.currentArticleId = article.id // 保存当前文章ID
             console.log('Set currentArticleId to:', this.currentArticleId)
           } else {
             // 如果没有文章内容，设置默认值
-            this.vditor.setValue(`# ${data.label}\n\n请开始编写内容...`)
+            this.$refs.editor.setValue(`# ${data.label}\n\n请开始编写内容...`)
             this.currentArticleId = null // 没有文章ID
             console.log('No article found, set currentArticleId to null')
           }
@@ -157,7 +138,7 @@ export default {
         return
       }
       
-      const content = this.vditor.getValue()
+      const content = this.$refs.editor.getValue()
       const article = {
         id: this.currentArticleId,
         title: this.selectedNode.label,
@@ -196,6 +177,12 @@ export default {
         })
     },
     
+    handleContentChange(value) {
+      // 处理编辑器内容变化事件
+      console.log('Editor content changed:', value)
+      // 可以在这里添加保存状态跟踪、自动保存等功能
+    },
+    
 
     
     syncArticles() {
@@ -213,7 +200,7 @@ export default {
         inputErrorMessage: '文件路径不能为空'
       }).then(({ value }) => {
         // 调用后端API进行同步
-        return this.$http.post('/articles/sync', {
+        return this.$http.post('/api/articles/sync', {
           categoryId: this.selectedNode.id,
           filePath: value
         })
@@ -247,7 +234,7 @@ export default {
       
       // 所有树节点都是分类节点，执行分类删除
       const isCategory = true
-      const deleteUrl = `/categories/${this.selectedNode.id}`
+      const deleteUrl = `/api/categories/${this.selectedNode.id}`
       const deleteType = '分类'
       
       // 直接执行删除操作，无需确认对话框
@@ -260,7 +247,7 @@ export default {
         this.initArticleTree()
         
         // 清空编辑器内容
-        this.vditor.setValue('')
+        this.$refs.editor.setValue('')
         this.selectedNode = null
         this.currentArticleId = null
       })
@@ -278,7 +265,7 @@ export default {
       }
       
       // 调用后端API进行导出
-      this.$http.get(`/articles/export/${this.selectedNode.id}`, {
+      this.$http.get(`/api/articles/export/${this.selectedNode.id}`, {
         responseType: 'blob' // 设置响应类型为blob，用于下载文件
       })
       .then(response => {
@@ -321,7 +308,7 @@ export default {
         }
         
         // 调用后端API添加新分类
-      this.$http.post('/categories', newCategory)
+      this.$http.post('/api/categories', newCategory)
         .then(response => {
           console.log('添加子节点成功:', response.data)
           this.$message.success('添加子节点成功')
@@ -355,7 +342,7 @@ export default {
         }
         
         // 调用后端API添加新分类
-        this.$http.post('/categories', newCategory)
+        this.$http.post('/api/categories', newCategory)
         .then(response => {
           console.log('添加同级节点成功:', response.data)
           this.$message.success('添加同级节点成功')

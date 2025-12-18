@@ -15,6 +15,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -390,6 +391,46 @@ public class ArticleContentServiceImpl implements ArticleContentService {
         
         // 如果没有#标题，尝试匹配文件名
         return null;
+    }
+    
+
+    
+    @Override
+    public List<ArticleContent> searchArticles(String keyword, Integer tagId) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // 如果tagId为0或null，只根据关键词搜索
+        if (tagId == null || tagId == 0) {
+            LambdaQueryWrapper<ArticleContent> wrapper = new LambdaQueryWrapper<>();
+            wrapper.and(w -> w.like(ArticleContent::getTitle, keyword.trim())
+                            .or().like(ArticleContent::getContent, keyword.trim()));
+            return articleContentMapper.selectList(wrapper);
+        } else {
+            // 指定标签，根据关键词和标签ID联合搜索
+            // 1. 先获取该标签下的所有分类ID
+            LambdaQueryWrapper<ArticleCategory> categoryWrapper = new LambdaQueryWrapper<>();
+            categoryWrapper.eq(ArticleCategory::getTagId, tagId);
+            List<ArticleCategory> categories = articleCategoryMapper.selectList(categoryWrapper);
+            
+            if (categories == null || categories.isEmpty()) {
+                return new ArrayList<>();
+            }
+            
+            // 2. 获取分类ID列表
+            List<Long> categoryIds = categories.stream()
+                    .map(ArticleCategory::getId)
+                    .collect(Collectors.toList());
+            
+            // 3. 根据关键词和分类ID列表搜索文章
+            LambdaQueryWrapper<ArticleContent> contentWrapper = new LambdaQueryWrapper<>();
+            contentWrapper.in(ArticleContent::getCategoryId, categoryIds)
+                    .and(w -> w.like(ArticleContent::getTitle, keyword.trim())
+                            .or().like(ArticleContent::getContent, keyword.trim()));
+            
+            return articleContentMapper.selectList(contentWrapper);
+        }
     }
     
     /**

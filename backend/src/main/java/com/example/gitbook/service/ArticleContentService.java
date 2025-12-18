@@ -58,4 +58,12 @@ public interface ArticleContentService {
      * @return 导出结果（包含zip文件流）
      */
     ApiResponseDTO<byte[]> exportArticles(Long categoryId);
+    
+    /**
+     * 搜索文章内容（支持标签过滤）
+     * @param keyword 搜索关键词
+     * @param tagId 标签ID
+     * @return 文章内容列表
+     */
+    List<ArticleContent> searchArticles(String keyword, Integer tagId);
 }

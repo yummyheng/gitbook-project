@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [vue2()],
     server: {
+      port: 5174,
       proxy: {
         '/api': {
           target: `http://localhost:${backendPort}`,
