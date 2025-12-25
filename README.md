@@ -2,6 +2,9 @@
 
 This is a full-stack project including backend and frontend for GitBook-like functionality.
 
+## 测试修改
+添加了测试注释用于验证git操作流程
+
 ## Technologies Used
 
 ### Backend
