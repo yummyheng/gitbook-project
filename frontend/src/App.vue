@@ -200,7 +200,7 @@ export default {
         inputErrorMessage: '文件路径不能为空'
       }).then(({ value }) => {
         // 调用后端API进行同步
-        return this.$http.post('/api/articles/sync', {
+        return this.$http.post('/articles/sync', {
           categoryId: this.selectedNode.id,
           filePath: value
         })
@@ -234,7 +234,7 @@ export default {
       
       // 所有树节点都是分类节点，执行分类删除
       const isCategory = true
-      const deleteUrl = `/api/categories/${this.selectedNode.id}`
+      const deleteUrl = `/categories/${this.selectedNode.id}`
       const deleteType = '分类'
       
       // 直接执行删除操作，无需确认对话框
@@ -265,7 +265,7 @@ export default {
       }
       
       // 调用后端API进行导出
-      this.$http.get(`/api/articles/export/${this.selectedNode.id}`, {
+      this.$http.get(`/articles/export/${this.selectedNode.id}`, {
         responseType: 'blob' // 设置响应类型为blob，用于下载文件
       })
       .then(response => {
@@ -308,7 +308,7 @@ export default {
         }
         
         // 调用后端API添加新分类
-      this.$http.post('/api/categories', newCategory)
+      this.$http.post('/categories', newCategory)
         .then(response => {
           console.log('添加子节点成功:', response.data)
           this.$message.success('添加子节点成功')
@@ -342,7 +342,7 @@ export default {
         }
         
         // 调用后端API添加新分类
-        this.$http.post('/api/categories', newCategory)
+        this.$http.post('/categories', newCategory)
         .then(response => {
           console.log('添加同级节点成功:', response.data)
           this.$message.success('添加同级节点成功')

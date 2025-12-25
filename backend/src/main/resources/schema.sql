@@ -22,3 +22,14 @@ CREATE TABLE article_content (
     PRIMARY KEY (id),
     CONSTRAINT fk_article_category FOREIGN KEY (category_id) REFERENCES article_category(id)
 );
+
+-- 创建标签表
+CREATE TABLE tag (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    default_tag BOOLEAN DEFAULT FALSE,
+    sort INT DEFAULT 0,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);

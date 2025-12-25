@@ -55,7 +55,7 @@ public class ArticleCategory implements Serializable {
     /**
      * 标签ID
      */
-    private Integer tagId = 0;
+    private Integer tagId = 6;
 
     /**
      * 子分类列表（非数据库字段）

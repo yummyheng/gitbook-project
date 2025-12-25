@@ -267,11 +267,8 @@ public class ArticleContentServiceImpl implements ArticleContentService {
         }
         String content = contentBuilder.toString();
         
-        // 提取标题
-        String title = extractTitle(content);
-        if (title == null || title.isEmpty()) {
-            title = file.getName().replace(".md", "");
-        }
+        // 直接使用文件名作为标题
+        String title = file.getName().replace(".md", "");
         
         // 为markdown文件创建分类节点
         System.out.println("ArticleContentServiceImpl.processMarkdownFile - Creating category for file: " + title + " with parentId: " + categoryId);
