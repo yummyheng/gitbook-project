@@ -5,6 +5,7 @@ This is a full-stack project including backend and frontend for GitBook-like fun
 ## 测试修改
 添加了测试注释用于验证git操作流程
 新增了一条测试注释，用于测试serviceManager的git命令执行功能
+再次添加测试注释，用于验证完整的git push流程通过serviceManager执行
 
 ## Technologies Used
 
