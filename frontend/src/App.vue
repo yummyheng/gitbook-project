@@ -104,7 +104,7 @@ export default {
     },
     
     handleNodeClick(data) {
-      // 处理节点点击事件
+      // 处理节点点击事件 - 测试注释：用于验证serviceManager的git命令执行功能
       this.selectedNode = data
       this.currentArticleId = null // 重置当前文章ID
       console.log('Selected node:', data)
